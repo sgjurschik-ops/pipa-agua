@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#EAF4F8">
+<meta name="pipa-pwa" content="1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Pipa agua">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Agua con Pipa</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<style>
+/* Layout: una pantalla de móvil; Pipa arriba con su mensaje, progreso en vasos, botones grandes abajo. Un solo tema claro y de alto contraste, elegido para personas mayores. */
+:root{
+  --bg:#EAF4F8; --surface:#FFFFFF; --ink:#1C2A31; --muted:#4F626B; --line:#CFE0E8;
+  --water:#2F86C8; --water-dark:#1F6AA3; --water-2:#7CC3EE; --water-soft:#D8EEFB;
+  --leaf:#7FA35C; --leaf-2:#9DBE7A; --seed:#C9A27A; --pot:#5B6F96; --pot-2:#4A5D84; --pot-line:#8FA0C2; --face:#2F302C; --blush:#F0A3AE;
+  --good:#3E8A2E; --good-soft:#E3F2DA; --sun:#F2C94C; --danger:#B9473F;
+  --f:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 18px/1.4 var(--f);-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+button:focus-visible,input:focus-visible{outline:3px solid var(--water-dark);outline-offset:3px}
+.app{max-width:520px;margin:0 auto;min-height:100%;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 20px;display:flex;flex-direction:column;gap:14px}
+
+/* cabecera */
+.top{display:flex;align-items:center;gap:10px}
+.top .date{flex:1;font:700 1.15rem/1.2 var(--f);text-transform:capitalize}
+.top .date small{display:block;font:500 .85rem var(--f);color:var(--muted);text-transform:none}
+.round{width:52px;height:52px;border-radius:50%;border:2px solid var(--line);background:var(--surface);display:grid;place-items:center;flex:none}
+.round svg{width:26px;height:26px}
+
+/* Pipa */
+.hero{background:var(--surface);border-radius:28px;padding:16px 16px 12px;display:grid;justify-items:center;gap:6px;position:relative;overflow:hidden}
+.bubble{background:var(--water-soft);border-radius:20px;padding:12px 16px;font:700 1.2rem/1.35 var(--f);text-align:center;width:100%;position:relative;text-wrap:balance}
+.bubble::after{content:"";position:absolute;left:50%;bottom:-11px;margin-left:-11px;border:11px solid transparent;border-bottom:0;border-top-color:var(--water-soft)}
+.pet{position:relative;width:150px;height:164px;margin-top:8px}
+.pet svg.p{width:150px;height:164px;display:block;transform-origin:50% 100%;overflow:visible}
+.pet .lf{transform-box:fill-box;transform-origin:50% 100%;animation:sway 4s ease-in-out infinite}
+@keyframes sway{0%,100%{rotate:-4deg}50%{rotate:4deg}}
+.pet .eyes{transform-box:fill-box;transform-origin:50% 50%;animation:blink 5s infinite}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.pet .spark{animation:spark 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spark{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1)}}
+.hero.jump svg.p{animation:jump .7s ease-out}
+@keyframes jump{0%{transform:none}30%{transform:translateY(-16px) scale(1.04,.96)}55%{transform:scale(1.06,.92)}75%{transform:scale(.97,1.03)}100%{transform:none}}
+.drop{position:absolute;left:50%;top:-30px;width:26px;height:34px;margin-left:-13px;opacity:0;pointer-events:none}
+.drop.go{animation:fall .65s ease-in forwards}
+@keyframes fall{0%{opacity:0;transform:translateY(0)}15%{opacity:1}85%{opacity:1;transform:translateY(70px) scale(1)}100%{opacity:0;transform:translateY(84px) scale(.4)}}
+.grow{font-size:.88rem;color:var(--muted);text-align:center}
+.grow b{color:var(--ink)}
+
+/* progreso */
+.prog{background:var(--surface);border-radius:28px;padding:14px 16px;display:grid;gap:10px}
+.count{display:flex;align-items:baseline;justify-content:center;gap:8px;flex-wrap:wrap}
+.count b{font:700 2.6rem/1 var(--f);color:var(--water-dark);font-variant-numeric:tabular-nums}
+.count span{font:700 1.3rem var(--f)}
+.count small{width:100%;text-align:center;font-size:.9rem;color:var(--muted)}
+.glasses{display:flex;flex-wrap:wrap;justify-content:center;gap:4px}
+.glasses svg{width:34px;height:34px}
+.count.done b{color:var(--good)}
+
+/* botones */
+.big{width:100%;min-height:96px;border:0;border-radius:28px;background:var(--water);color:#fff;font:700 1.5rem/1.2 var(--f);display:flex;align-items:center;justify-content:center;gap:14px;box-shadow:0 6px 0 var(--water-dark);transition:transform .08s,box-shadow .08s}
+.big:active{transform:translateY(4px);box-shadow:0 2px 0 var(--water-dark)}
+.big svg{width:44px;height:44px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mid{min-height:76px;border:3px solid var(--water);border-radius:24px;background:var(--surface);color:var(--water-dark);font:700 1.2rem/1.15 var(--f);display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 10px;transition:transform .08s}
+.mid:active{transform:scale(.97)}
+.mid svg{width:30px;height:30px;flex:none}
+.mid small{display:block;font:500 .82rem var(--f);color:var(--muted)}
+.undo{align-self:center;min-height:52px;border:0;background:none;color:var(--muted);font:700 1rem var(--f);text-decoration:underline;text-underline-offset:4px;padding:6px 18px}
+.undo:disabled{opacity:.35;text-decoration:none}
+
+/* semana */
+.week{background:var(--surface);border-radius:28px;padding:12px 14px;display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.week .d{display:grid;justify-items:center;gap:2px;font:700 .9rem var(--f);color:var(--muted)}
+.week .d svg{width:30px;height:34px}
+.week .d.today{color:var(--ink)}
+.week .d.today .lbl{background:var(--ink);color:#fff;border-radius:999px;padding:0 8px}
+.week-title{font:700 .95rem var(--f);color:var(--muted);text-align:center;margin:0 0 -6px}
+
+/* aviso breve */
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font:700 1rem var(--f);opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;z-index:40;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* capas */
+.layer{position:fixed;inset:0;z-index:30;background:rgba(28,42,49,.45);display:grid;place-items:center;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-bottom,0px))}
+.card{background:var(--surface);border-radius:28px;padding:22px 20px;width:100%;max-width:440px;max-height:100%;overflow-y:auto;display:grid;gap:16px}
+.card h2{margin:0;font:700 1.4rem var(--f);text-align:center}
+.celebrate .card{justify-items:center;text-align:center;position:relative;overflow:hidden}
+.celebrate .card svg.p{width:170px;height:186px}
+.celebrate p{margin:0;font-size:1.15rem}
+.okbtn{min-height:70px;width:100%;border:0;border-radius:24px;background:var(--good);color:#fff;font:700 1.4rem var(--f)}
+.confetti{position:absolute;top:-20px;width:12px;height:16px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:var(--water-2);animation:conf 1.8s ease-in forwards}
+@keyframes conf{to{transform:translateY(420px) rotate(160deg);opacity:0}}
+
+/* ajustes */
+.set{display:grid;gap:8px}
+.set>label,.set>.lbl{font:700 1.05rem var(--f)}
+.stepper{display:grid;grid-template-columns:64px 1fr 64px;align-items:center;gap:10px}
+.stepper button{height:64px;border-radius:20px;border:3px solid var(--water);background:var(--surface);color:var(--water-dark);font:700 2rem/1 var(--f)}
+.stepper output{text-align:center;font:700 1.6rem var(--f)}
+.stepper output small{display:block;font:500 .85rem var(--f);color:var(--muted)}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.seg button{min-height:56px;border-radius:16px;border:2px solid var(--line);background:var(--surface);font:700 1rem var(--f)}
+.seg button[aria-pressed="true"]{background:var(--water);border-color:var(--water);color:#fff}
+.set input[type=text]{min-height:56px;border-radius:16px;border:2px solid var(--line);padding:0 14px;font:500 1.1rem var(--f);width:100%;-webkit-user-select:text;user-select:text;background:var(--surface);color:var(--ink)}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;border:2px solid var(--line);border-radius:16px;padding:0 14px;background:var(--surface);font:700 1.05rem var(--f);width:100%}
+.switch i{width:56px;height:32px;border-radius:999px;background:var(--line);position:relative;flex:none;transition:background .2s}
+.switch i::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .2s}
+.switch[aria-checked="true"] i{background:var(--good)}
+.switch[aria-checked="true"] i::after{transform:translateX(24px)}
+.help{font-size:.9rem;color:var(--muted);line-height:1.5;margin:0}
+.help b{color:var(--ink)}
+.danger{min-height:52px;border-radius:16px;border:2px solid var(--danger);background:none;color:var(--danger);font:700 1rem var(--f)}
+.danger.sure{background:var(--danger);color:#fff}
+.close{min-height:64px;border:0;border-radius:22px;background:var(--water);color:#fff;font:700 1.25rem var(--f)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+@media (max-height:700px){.pet,.pet svg.p{width:126px;height:138px}.big{min-height:84px}.mid{min-height:68px}}
+</style>
+
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top">
+    <div class="date" id="date"></div>
+    <button class="round" id="soundbtn" aria-label="Sonido activado" aria-pressed="true"></button>
+    <button class="round" id="setbtn" aria-label="Ajustes">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/></svg>
+    </button>
+  </header>
+
+  <section class="hero" id="hero" aria-live="polite">
+    <div class="bubble" id="msg">¡Hola! Soy Pipa.</div>
+    <div class="pet">
+      <svg class="drop" id="drop" viewBox="0 0 26 34" aria-hidden="true"><path d="M13 1C17 8 25 15 25 22a12 12 0 0 1-24 0C1 15 9 8 13 1Z" fill="var(--water-2)" stroke="var(--water-dark)" stroke-width="2"/></svg>
+      <div id="petsvg"></div>
+    </div>
+    <div class="grow" id="grow"></div>
+  </section>
+
+  <section class="prog" aria-label="Agua de hoy">
+    <div class="count" id="count"></div>
+    <div class="glasses" id="glasses" aria-hidden="true"></div>
+  </section>
+
+  <button class="big" id="add1">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 4h20l-2.6 24H8.6z" fill="rgba(255,255,255,.25)" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/><path d="M7.4 13h17.2l-1.6 15H9z" fill="#fff"/></svg>
+    He bebido un vaso
+  </button>
+  <div class="row">
+    <button class="mid" id="addHalf"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 4h20l-2.6 24H8.6z" fill="none" stroke="var(--water-dark)" stroke-width="2.4" stroke-linejoin="round"/><path d="M7.9 18h16.2l-1.1 10H9z" fill="var(--water-2)"/></svg><span>Medio vaso</span></button>
+    <button class="mid" id="addBottle"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M13 3h6v4l3 4v17a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2V11l3-4z" fill="none" stroke="var(--water-dark)" stroke-width="2.2" stroke-linejoin="round"/><path d="M10.2 15h11.6v13a1 1 0 0 1-1 1h-9.6a1 1 0 0 1-1-1z" fill="var(--water-2)"/></svg><span>Una botella<small id="bottlesub">2 vasos</small></span></button>
+  </div>
+  <button class="undo" id="undo" disabled>Me he equivocado, quitar el último</button>
+
+  <p class="week-title">Esta semana</p>
+  <section class="week" id="week" aria-label="Días con el objetivo cumplido esta semana"></section>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<!-- celebración -->
+<div class="layer celebrate" id="cel" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="cel-t">
+    <div id="cel-pet"></div>
+    <h2 id="cel-t">¡Objetivo cumplido!</h2>
+    <p id="cel-p">Hoy has bebido toda el agua. Pipa está muy feliz.</p>
+    <button class="okbtn" id="cel-ok">¡Bien!</button>
+  </div>
+</div>
+
+<!-- ajustes -->
+<div class="layer" id="settings" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="set-t">
+    <h2 id="set-t">Ajustes</h2>
+    <div class="set">
+      <span class="lbl">Objetivo de cada día</span>
+      <div class="stepper"><button id="g-minus" aria-label="Un vaso menos">−</button><output id="g-val"></output><button id="g-plus" aria-label="Un vaso más">+</button></div>
+    </div>
+    <div class="set">
+      <span class="lbl">Tamaño del vaso</span>
+      <div class="seg" id="g-size"></div>
+    </div>
+    <div class="set">
+      <label for="g-name">Nombre (para que Pipa la salude)</label>
+      <input type="text" id="g-name" maxlength="20" autocomplete="off">
+    </div>
+    <button class="switch" id="g-sound" role="switch" aria-checked="true">Sonidos <i></i></button>
+    <p class="help"><b>Para tenerla en el móvil:</b> en iPhone, botón Compartir → «Añadir a pantalla de inicio». En Android, menú ⋮ → «Instalar aplicación» o «Añadir a pantalla de inicio».</p>
+    <p class="help">Los datos se guardan solo en este móvil.</p>
+    <button class="danger" id="g-reset">Borrar todo el historial</button>
+    <button class="close" id="g-close">Listo</button>
+  </div>
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,"0");
+const iso=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const today=()=>iso(new Date());
+const addDays=(s,n)=>{const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+n);return iso(d)};
+const KEY="pipa-agua.v1";
+const DEF={goal:8,glass:250,name:"",sound:true};
+
+/* ---------- datos (solo en este dispositivo) ---------- */
+let mem=null;
+function load(){
+  if(mem)return mem;
+  let d=null;try{d=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){}
+  mem=d&&typeof d==="object"?d:{};
+  mem.settings={...DEF,...(mem.settings||{})};
+  mem.days=mem.days||{};
+  return mem;
+}
+function store(){try{localStorage.setItem(KEY,JSON.stringify(mem))}catch(e){}}
+const S=()=>load().settings;
+function day(k=today()){const D=load().days;if(!D[k])D[k]={log:[],goal:S().goal};return D[k]}
+const total=k=>{const d=load().days[k];return d?d.log.reduce((a,x)=>a+x.v,0):0};
+const goalOf=k=>{const d=load().days[k];return d&&d.goal?d.goal:S().goal};
+const reached=k=>total(k)>=goalOf(k)&&total(k)>0;
+function goodDays(){return Object.keys(load().days).filter(reached).length}
+
+/* ---------- Pipa ---------- */
+const STAGES=[{n:"semilla",a:"una",at:0},{n:"brote",a:"un",at:1},{n:"plantita",a:"una",at:3},{n:"planta",a:"una",at:7},{n:"planta en flor",a:"una",at:14}];
+function stageOf(n){let s=0;STAGES.forEach((x,i)=>{if(n>=x.at)s=i});return s}
+function petSVG(stage,mood){
+  const sad=mood==="thirsty";
+  const leaf=(rot,s)=>`<g transform="translate(50 37) rotate(${rot+(sad?(rot<0?-30:rot>0?30:0):0)}) scale(${s})"><path class="lf" d="M0 0 C -9 -6 -9 -19 0 -26 C 9 -19 9 -6 0 0Z" fill="var(--leaf-2)"/></g>`;
+  let top="";
+  if(stage>=1)top+=`<line x1="50" y1="37" x2="50" y2="${sad?33:31}" stroke="var(--leaf)" stroke-width="2.5" stroke-linecap="round"/>`+leaf(-38,stage>=3?1.05:.85);
+  if(stage>=2)top+=leaf(38,stage>=3?1.05:.85);
+  if(stage>=3)top+=leaf(0,1.1);
+  if(stage>=4)top+=[0,72,144,216,288].map(a=>`<ellipse cx="50" cy="1" rx="3.6" ry="5.2" fill="var(--blush)" transform="rotate(${a} 50 6)"/>`).join("")+`<circle cx="50" cy="6" r="3.2" fill="var(--sun)"/>`;
+  const head=stage===0?"var(--seed)":"var(--leaf)";
+  let eyes,mouth,extra="";
+  if(mood==="thirsty"){eyes=`<g class="eyes"><circle cx="42" cy="57" r="2.4" fill="var(--face)"/><circle cx="58" cy="57" r="2.4" fill="var(--face)"/></g>`;mouth=`<path d="M45 68 q5 -4 10 0" stroke="var(--face)" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;extra=`<path d="M64 56 q-2 4 0 6 q2 -2 0 -6z" fill="var(--water-2)"/>`}
+  else if(mood==="ok"){eyes=`<g class="eyes"><circle cx="42" cy="56" r="2.6" fill="var(--face)"/><circle cx="58" cy="56" r="2.6" fill="var(--face)"/></g>`;mouth=`<path d="M44 64 q6 5 12 0" stroke="var(--face)" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;extra=`<circle cx="35" cy="63" r="3.2" fill="var(--blush)" opacity=".55"/><circle cx="65" cy="63" r="3.2" fill="var(--blush)" opacity=".55"/>`}
+  else{eyes=`<path d="M38 57 q4 -4.5 8 0 M54 57 q4 -4.5 8 0" stroke="var(--face)" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;mouth=`<path d="M42.5 63 q7.5 9 15 0 z" fill="var(--face)"/>`;extra=`<circle cx="35" cy="63" r="3.6" fill="var(--blush)" opacity=".7"/><circle cx="65" cy="63" r="3.6" fill="var(--blush)" opacity=".7"/>`;
+    if(mood==="radiant")extra+=[[14,40],[86,34],[10,66],[90,62]].map(([x,y])=>`<path class="spark" d="M${x} ${y-5} L${x+1.4} ${y-1.4} L${x+5} ${y} L${x+1.4} ${y+1.4} L${x} ${y+5} L${x-1.4} ${y+1.4} L${x-5} ${y} L${x-1.4} ${y-1.4} Z" fill="var(--sun)"/>`).join("")}
+  const tilt=sad?`transform="rotate(-6 50 80)"`:"";
+  return `<svg class="p" viewBox="0 0 100 108" role="img" aria-label="Pipa, ${STAGES[stage].n}">
+    <g ${tilt}>${top}<circle cx="50" cy="58" r="22" fill="${head}"/>${eyes}${mouth}</g>${extra}
+    <rect x="25" y="76" width="50" height="8" rx="3" fill="var(--pot-2)"/>
+    <path d="M28 84 h44 l-5 21 h-34 z" fill="var(--pot)"/>
+    <path d="M33 93 q3.5 -4 7 0 q3.5 -4 7 0 q3.5 -4 7 0 q3.5 -4 7 0" stroke="var(--pot-line)" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>`;
+}
+
+/* ---------- sonidos (generados, sin archivos) ---------- */
+let AC=null;
+function ac(){
+  if(!S().sound)return null;
+  try{if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C()}if(AC.state==="suspended")AC.resume()}catch(e){return null}
+  return AC;
+}
+function note(c,t,f1,f2,dur,type="sine",vol=.22){
+  const o=c.createOscillator(),g=c.createGain();
+  o.type=type;o.frequency.setValueAtTime(f1,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+dur);
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+.05);
+}
+const SND={
+  drink(){const c=ac();if(!c)return;const t=c.currentTime+.01;note(c,t,480,260,.13);note(c,t+.14,560,300,.13);note(c,t+.28,660,340,.16)},
+  goal(){const c=ac();if(!c)return;const t=c.currentTime+.01;[523,659,784,1047].forEach((f,i)=>note(c,t+i*.13,f,0,.32,"triangle",.24));[523,659,784].forEach(f=>note(c,t+.6,f,0,.8,"sine",.12))},
+  grow(){const c=ac();if(!c)return;const t=c.currentTime+.01;note(c,t,300,900,.45,"sine",.18);[1175,1397,1568,1760].forEach((f,i)=>note(c,t+.45+i*.09,f,0,.25,"triangle",.14))},
+  undo(){const c=ac();if(!c)return;const t=c.currentTime+.01;note(c,t,330,200,.25,"sine",.16)},
+  tap(){const c=ac();if(!c)return;note(c,c.currentTime+.01,700,0,.07,"sine",.1)}
+};
+const buzz=ms=>{try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}};
+
+/* ---------- utilidades de texto ---------- */
+function fmtC(n){const w=Math.floor(n),h=Math.round((n-w)*2)/2;return (w||h?"":"0")+(w?w:"")+(h?"½":"")}
+function ml(n){const v=Math.round(n*S().glass);return v>=1000?(v/1000).toLocaleString("es-ES",{maximumFractionDigits:2})+" litros":v+" ml"}
+const hi=()=>S().name?`, ${S().name}`:"";
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+/* ---------- pantalla ---------- */
+function glassSVG(fill){
+  const top=4,bot=28,l=y=>6+(y-top)*(2.6/24),r=y=>26-(y-top)*(2.6/24);
+  const wy=bot-Math.max(0,Math.min(1,fill))*(bot-top-3);
+  const water=fill>0?`<path d="M${l(wy).toFixed(2)} ${wy.toFixed(2)} H${r(wy).toFixed(2)} L${r(bot).toFixed(2)} ${bot} H${l(bot).toFixed(2)} Z" fill="var(--water-2)"/>`:"";
+  return `<svg viewBox="0 0 32 32">${water}<path d="M6 4h20l-2.6 24H8.6z" fill="none" stroke="${fill>=1?"var(--water-dark)":"var(--line)"}" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
+}
+function dropSVG(full,today){
+  return `<svg viewBox="0 0 30 34" aria-hidden="true"><path d="M15 2C19 9 27 16 27 22a12 12 0 0 1-24 0C3 16 11 9 15 2Z" fill="${full?"var(--water)":"none"}" stroke="${full?"var(--water-dark)":today?"var(--ink)":"var(--line)"}" stroke-width="2.4"/>${full?`<path d="M9.5 22.5a5.5 5.5 0 0 0 4 5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>`:""}</svg>`;
+}
+let lastMsg="";
+function moodNow(n,g){if(n<=0)return "thirsty";if(n>=g)return "radiant";if(n>=g/2)return "happy";return "ok"}
+function defaultMsg(n,g){
+  const left=g-n;
+  if(n<=0){const h=new Date().getHours();return h<12?`¡Buenos días${hi()}! Tengo sed… ¿bebemos un vaso de agua?`:`Tengo sed${hi()}… ¿bebemos un vaso de agua?`}
+  if(left<=0)return `¡Objetivo cumplido${hi()}! Estoy muy feliz.`;
+  const last=day().log.slice(-1)[0];
+  if(last&&Date.now()-last.t>2*3600e3&&new Date().getHours()<22)return `Hace rato que no bebemos. ¿Un vasito${hi()}?`;
+  if(left<=1)return `¡Solo te queda ${left<1?"medio vaso":"un vaso"}!`;
+  if(n>=g/2)return `¡Ya vamos por la mitad! Te quedan ${fmtC(left)} vasos.`;
+  return `¡Muy bien! Te quedan ${fmtC(left)} vasos.`;
+}
+function render(msg){
+  const k=today(),n=total(k),g=goalOf(k);
+  const d=new Date();
+  $("date").innerHTML=`${d.toLocaleDateString("es-ES",{weekday:"long"})}<small>${d.toLocaleDateString("es-ES",{day:"numeric",month:"long"})}</small>`;
+  const st=stageOf(goodDays());
+  $("petsvg").innerHTML=petSVG(st,moodNow(n,g));
+  $("msg").textContent=msg||defaultMsg(n,g);
+  const next=STAGES[st+1];
+  $("grow").innerHTML=next?`Pipa es ${STAGES[st].a} <b>${STAGES[st].n}</b>. ${next.at-goodDays()===1?"Un día más":`${next.at-goodDays()} días más`} cumpliendo el objetivo y crecerá.`:`Pipa ha <b>florecido</b>. ¡Sigue cuidándola!`;
+  const c=$("count");c.classList.toggle("done",n>=g);
+  c.innerHTML=`<b>${fmtC(n)}</b><span>de ${g} vasos</span><small>${ml(n)} de ${ml(g)}</small>`;
+  c.setAttribute("aria-label",`${fmtC(n)} de ${g} vasos`);
+  const cells=Math.max(g,Math.ceil(n));
+  $("glasses").innerHTML=Array.from({length:cells},(_,i)=>glassSVG(n-i)).join("");
+  $("undo").disabled=!day().log.length;
+  $("bottlesub").textContent=`${fmtC(500/S().glass)} vasos`;
+  // semana (lunes a domingo)
+  const dw=(d.getDay()+6)%7;const mon=addDays(k,-dw);
+  $("week").innerHTML=["L","M","X","J","V","S","D"].map((l,i)=>{const kk=addDays(mon,i);return `<div class="d${kk===k?" today":""}">${dropSVG(reached(kk),kk===k)}<span class="lbl">${l}</span></div>`}).join("");
+  const sb=$("soundbtn");sb.setAttribute("aria-pressed",S().sound?"true":"false");sb.setAttribute("aria-label",S().sound?"Sonido activado":"Sonido desactivado");
+  sb.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="var(--water-soft)"/>${S().sound?`<path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/>`:`<path d="M16 9.5l5 5M21 9.5l-5 5"/>`}</svg>`;
+}
+
+/* ---------- acciones ---------- */
+let busy=false,tT;
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(tT);tT=setTimeout(()=>e.classList.remove("show"),1800)}
+function add(v){
+  if(busy)return;busy=true;setTimeout(()=>busy=false,500);
+  const k=today(),before=total(k),g=goalOf(k),stBefore=stageOf(goodDays());
+  const d=day(k);d.goal=S().goal;d.log.push({t:Date.now(),v});store();
+  const after=total(k);
+  SND.drink();buzz(30);
+  const drop=$("drop");drop.classList.remove("go");void drop.offsetWidth;drop.classList.add("go");
+  const hero=$("hero");hero.classList.remove("jump");void hero.offsetWidth;hero.classList.add("jump");
+  const cheers=[`¡Glu, glu! Qué rico${hi()}.`,"¡Gracias! Me encanta el agua.","¡Así me gusta!",`¡Muy bien${hi()}!`];
+  if(before<g&&after>=g){
+    render();
+    const stAfter=stageOf(goodDays());
+    setTimeout(()=>celebrate(stAfter>stBefore,stAfter),650);
+  }else render(after>=g?`¡Más agua todavía! Qué bien${hi()}.`:pick(cheers)+(g-after>0?` Te quedan ${fmtC(g-after)}.`:""));
+}
+function undo(){
+  const d=day();if(!d.log.length)return;
+  const k=today(),g=goalOf(k),wasDone=total(k)>=g;
+  d.log.pop();store();SND.undo();buzz(15);
+  render();toast(wasDone&&total(k)<g?"Quitado. Aún falta un poco para el objetivo.":"Quitado el último.");
+}
+function celebrate(grew,st){
+  const n=load().settings.name;
+  $("cel-pet").innerHTML=petSVG(st,"radiant");
+  $("cel-t").textContent=grew?"¡Pipa ha crecido!":"¡Objetivo cumplido!";
+  $("cel-p").textContent=grew?`Ahora es ${STAGES[st].a} ${STAGES[st].n}. ¡Gracias por cuidarla${n?", "+n:""}!`:`Hoy has bebido toda el agua${n?", "+n:""}. Pipa está muy feliz.`;
+  $("cel").hidden=false;
+  if(grew)SND.grow();else SND.goal();
+  buzz([40,60,40]);
+  if(!matchMedia("(prefers-reduced-motion: reduce)").matches){
+    const card=$("cel").querySelector(".card");
+    card.querySelectorAll(".confetti").forEach(e=>e.remove());
+    for(let i=0;i<16;i++){const c=document.createElement("i");c.className="confetti";c.style.left=(5+Math.random()*90)+"%";c.style.animationDelay=(Math.random()*.6)+"s";if(i%3===0)c.style.background="var(--leaf-2)";if(i%4===0)c.style.background="var(--sun)";card.appendChild(c)}
+  }
+  $("cel-ok").focus();
+}
+$("cel-ok").addEventListener("click",()=>{$("cel").hidden=true;SND.tap();render()});
+$("add1").addEventListener("click",()=>add(1));
+$("addHalf").addEventListener("click",()=>add(.5));
+$("addBottle").addEventListener("click",()=>add(500/S().glass));
+$("undo").addEventListener("click",undo);
+$("soundbtn").addEventListener("click",()=>{S().sound=!S().sound;store();render();if(S().sound)SND.tap();toast(S().sound?"Sonido activado":"Sonido desactivado")});
+
+/* ---------- ajustes ---------- */
+const SIZES=[150,200,250,300];
+function renderSet(){
+  const s=S();
+  $("g-val").innerHTML=`${s.goal} vasos<small>${ml(s.goal)} al día</small>`;
+  $("g-size").innerHTML=SIZES.map(v=>`<button data-size="${v}" aria-pressed="${s.glass===v}">${v} ml</button>`).join("");
+  if(document.activeElement!==$("g-name"))$("g-name").value=s.name;
+  $("g-sound").setAttribute("aria-checked",s.sound?"true":"false");
+}
+function setGoal(v){S().goal=Math.max(1,Math.min(15,v));const d=day();d.goal=S().goal;store();renderSet();render();SND.tap()}
+$("setbtn").addEventListener("click",()=>{renderSet();$("settings").hidden=false;$("g-close").focus()});
+$("g-close").addEventListener("click",()=>{$("settings").hidden=true;render()});
+$("g-minus").addEventListener("click",()=>setGoal(S().goal-1));
+$("g-plus").addEventListener("click",()=>setGoal(S().goal+1));
+$("g-size").addEventListener("click",e=>{const b=e.target.closest("[data-size]");if(!b)return;S().glass=+b.dataset.size;store();renderSet();render();SND.tap()});
+$("g-name").addEventListener("input",()=>{S().name=$("g-name").value.trim().slice(0,20);store()});
+$("g-sound").addEventListener("click",()=>{S().sound=!S().sound;store();renderSet();render();if(S().sound)SND.tap()});
+$("g-reset").addEventListener("click",()=>{
+  const b=$("g-reset");
+  if(!b.classList.contains("sure")){b.classList.add("sure");b.textContent="Toca otra vez para borrarlo todo";setTimeout(()=>{b.classList.remove("sure");b.textContent="Borrar todo el historial"},4000);return}
+  load().days={};store();b.classList.remove("sure");b.textContent="Borrar todo el historial";renderSet();render();toast("Historial borrado");
+});
+document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(!$("settings").hidden){$("settings").hidden=true;render()}else if(!$("cel").hidden){$("cel").hidden=true;render()}});
+
+/* cambio de día y recordatorio al volver a la app */
+let shown=today();
+function refresh(){if(today()!==shown){shown=today()}render()}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)refresh()});
+setInterval(()=>{if(!document.hidden&&today()!==shown)refresh()},60000);
+
+/* app instalable: solo cuando se sirve como app propia */
+try{if(document.querySelector('meta[name="pipa-pwa"]')&&"serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{})}catch(e){}
+
+render();
+window.__pipa={add,undo,total,today,load,stageOf,goodDays};
+})();
+</script>
+
+</body>
+</html>
