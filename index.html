@@ -8,22 +8,24 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Pipa agua">
+<meta name="apple-mobile-web-app-title" content="Pipa">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Agua con Pipa</title>
+<title>Pipa</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap">
+</head>
+<body>
 <style>
-/* Layout: una pantalla de móvil; Pipa arriba con su mensaje, progreso en vasos, botones grandes abajo. Un solo tema claro y de alto contraste, elegido para personas mayores. */
+/* Layout: una pantalla de móvil; Pipa en su jardín arriba, progreso en vasos, botones grandes abajo. Un solo tema claro y de alto contraste, elegido para personas mayores. */
 :root{
   --bg:#EAF4F8; --surface:#FFFFFF; --ink:#1C2A31; --muted:#4F626B; --line:#CFE0E8;
   --water:#2F86C8; --water-dark:#1F6AA3; --water-2:#7CC3EE; --water-soft:#D8EEFB;
   --leaf:#7FA35C; --leaf-2:#9DBE7A; --seed:#C9A27A; --pot:#5B6F96; --pot-2:#4A5D84; --pot-line:#8FA0C2; --face:#2F302C; --blush:#F0A3AE;
-  --good:#3E8A2E; --good-soft:#E3F2DA; --sun:#F2C94C; --danger:#B9473F;
+  --good:#3E8A2E; --good-soft:#E3F2DA; --sun:#F2C94C; --danger:#B9473F; --star:#E0A526;
   --f:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",system-ui,sans-serif;
   color-scheme:light;
 }
@@ -36,30 +38,52 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--water-dark);out
 .app{max-width:520px;margin:0 auto;min-height:100%;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 20px;display:flex;flex-direction:column;gap:14px}
 
 /* cabecera */
-.top{display:flex;align-items:center;gap:10px}
-.top .date{flex:1;font:700 1.15rem/1.2 var(--f);text-transform:capitalize}
+.top{display:flex;align-items:center;gap:8px}
+.top .date{flex:1;min-width:0;font:700 1.15rem/1.2 var(--f);text-transform:capitalize}
 .top .date small{display:block;font:500 .85rem var(--f);color:var(--muted);text-transform:none}
-.round{width:52px;height:52px;border-radius:50%;border:2px solid var(--line);background:var(--surface);display:grid;place-items:center;flex:none}
+.round{width:52px;height:52px;border-radius:50%;border:2px solid var(--line);background:var(--surface);display:grid;place-items:center;flex:none;padding:0;position:relative}
 .round svg{width:26px;height:26px}
+.round .dot{position:absolute;top:2px;right:2px;width:14px;height:14px;border-radius:50%;background:var(--danger);border:2px solid var(--surface)}
 
-/* Pipa */
+/* Pipa en su jardín */
 .hero{background:var(--surface);border-radius:28px;padding:16px 16px 12px;display:grid;justify-items:center;gap:6px;position:relative;overflow:hidden}
-.bubble{background:var(--water-soft);border-radius:20px;padding:12px 16px;font:700 1.2rem/1.35 var(--f);text-align:center;width:100%;position:relative;text-wrap:balance}
+.bubble{background:var(--water-soft);border-radius:20px;padding:12px 16px;font:700 1.2rem/1.35 var(--f);text-align:center;width:100%;position:relative;text-wrap:balance;min-height:3.1em;display:grid;place-items:center}
 .bubble::after{content:"";position:absolute;left:50%;bottom:-11px;margin-left:-11px;border:11px solid transparent;border-bottom:0;border-top-color:var(--water-soft)}
-.pet{position:relative;width:150px;height:164px;margin-top:8px}
+.scene{position:relative;width:100%;height:176px;margin-top:4px}
+.scene svg.garden{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.pet{position:absolute;left:50%;bottom:0;width:150px;height:164px;margin-left:-75px;border:0;background:none;padding:0;border-radius:24px}
 .pet svg.p{width:150px;height:164px;display:block;transform-origin:50% 100%;overflow:visible}
-.pet .lf{transform-box:fill-box;transform-origin:50% 100%;animation:sway 4s ease-in-out infinite}
+.lf{transform-box:fill-box;transform-origin:50% 100%;animation:sway 4s ease-in-out infinite}
 @keyframes sway{0%,100%{rotate:-4deg}50%{rotate:4deg}}
-.pet .eyes{transform-box:fill-box;transform-origin:50% 50%;animation:blink 5s infinite}
+.eyes{transform-box:fill-box;transform-origin:50% 50%;animation:blink 5s infinite}
 @keyframes blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
-.pet .spark{animation:spark 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.spark{animation:spark 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
 @keyframes spark{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1)}}
+.zz text{animation:zz 2.6s ease-in-out infinite;transform-box:fill-box}
+.zz text:nth-child(2){animation-delay:.9s}
+@keyframes zz{0%{opacity:0;transform:translate(0,4px)}40%{opacity:1}100%{opacity:0;transform:translate(6px,-8px)}}
 .hero.jump svg.p{animation:jump .7s ease-out}
 @keyframes jump{0%{transform:none}30%{transform:translateY(-16px) scale(1.04,.96)}55%{transform:scale(1.06,.92)}75%{transform:scale(.97,1.03)}100%{transform:none}}
+.hero.dance svg.p{animation:dance 1s ease-in-out}
+@keyframes dance{0%,100%{transform:none}20%{transform:rotate(-9deg)}40%{transform:rotate(8deg) translateY(-6px)}60%{transform:rotate(-7deg)}80%{transform:rotate(5deg) translateY(-3px)}}
+.hero.wiggle svg.p{animation:wiggle .6s ease-in-out}
+@keyframes wiggle{0%,100%{transform:none}25%{transform:scale(1.08,.92)}50%{transform:scale(.94,1.06)}75%{transform:scale(1.04,.96)}}
 .drop{position:absolute;left:50%;top:-30px;width:26px;height:34px;margin-left:-13px;opacity:0;pointer-events:none}
 .drop.go{animation:fall .65s ease-in forwards}
 @keyframes fall{0%{opacity:0;transform:translateY(0)}15%{opacity:1}85%{opacity:1;transform:translateY(70px) scale(1)}100%{opacity:0;transform:translateY(84px) scale(.4)}}
-.grow{font-size:.88rem;color:var(--muted);text-align:center}
+.garden .pop{transform-box:fill-box;transform-origin:50% 100%;animation:pop .9s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+.garden .bob{transform-box:fill-box;transform-origin:center;animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.garden .arrive{animation:arrive 1.4s ease-out both}
+@keyframes arrive{0%{transform:translate(90px,-40px);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+.garden .flap{transform-box:fill-box;transform-origin:50% 50%;animation:flap .5s ease-in-out infinite}
+@keyframes flap{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.45)}}
+.garden .spin{transform-box:fill-box;transform-origin:center;animation:spin 5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.garden .glow{animation:glow 1.8s ease-in-out infinite}
+@keyframes glow{0%,100%{opacity:.25}50%{opacity:.85}}
+.grow{font-size:.88rem;color:var(--muted);text-align:center;line-height:1.45}
 .grow b{color:var(--ink)}
 
 /* progreso */
@@ -100,12 +124,32 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--water-dark);out
 .layer{position:fixed;inset:0;z-index:30;background:rgba(28,42,49,.45);display:grid;place-items:center;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-bottom,0px))}
 .card{background:var(--surface);border-radius:28px;padding:22px 20px;width:100%;max-width:440px;max-height:100%;overflow-y:auto;display:grid;gap:16px}
 .card h2{margin:0;font:700 1.4rem var(--f);text-align:center}
+.card h3{margin:0;font:700 1.1rem var(--f)}
 .celebrate .card{justify-items:center;text-align:center;position:relative;overflow:hidden}
 .celebrate .card svg.p{width:170px;height:186px}
 .celebrate p{margin:0;font-size:1.15rem}
+.celebrate .extra{display:grid;gap:6px;width:100%}
+.celebrate .extra div{background:var(--good-soft);border-radius:16px;padding:8px 12px;font:700 1rem var(--f)}
 .okbtn{min-height:70px;width:100%;border:0;border-radius:24px;background:var(--good);color:#fff;font:700 1.4rem var(--f)}
 .confetti{position:absolute;top:-20px;width:12px;height:16px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:var(--water-2);animation:conf 1.8s ease-in forwards}
 @keyframes conf{to{transform:translateY(420px) rotate(160deg);opacity:0}}
+
+/* colección */
+.gbar{height:14px;border-radius:99px;background:var(--good-soft);overflow:hidden}
+.gbar i{display:block;height:100%;background:var(--leaf);border-radius:99px}
+.vis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.vis div{background:var(--bg);border-radius:18px;padding:8px 4px;display:grid;justify-items:center;gap:2px;font:700 .85rem var(--f);text-align:center}
+.vis svg{width:54px;height:44px}
+.vis .no svg{opacity:.18;filter:grayscale(1)}
+.vis .no{color:var(--muted)}
+.vis small{font:500 .78rem var(--f);color:var(--muted)}
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.badge{background:var(--bg);border-radius:18px;padding:10px 4px;display:grid;justify-items:center;gap:4px;text-align:center}
+.badge .em{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:1.7rem;background:#FFF4D6;border:3px solid var(--star)}
+.badge b{font:700 .85rem/1.2 var(--f)}
+.badge small{font:500 .74rem/1.25 var(--f);color:var(--muted)}
+.badge.no .em{background:var(--surface);border-color:var(--line);filter:grayscale(1);opacity:.4}
+.badge.no b{color:var(--muted)}
 
 /* ajustes */
 .set{display:grid;gap:8px}
@@ -129,14 +173,17 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--water-dark);out
 .danger.sure{background:var(--danger);color:#fff}
 .close{min-height:64px;border:0;border-radius:22px;background:var(--water);color:#fff;font:700 1.25rem var(--f)}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
-@media (max-height:700px){.pet,.pet svg.p{width:126px;height:138px}.big{min-height:84px}.mid{min-height:68px}}
+@media (max-height:700px){.scene{height:150px}.pet,.pet svg.p{width:126px;height:138px}.pet{margin-left:-63px}.big{min-height:84px}.mid{min-height:68px}}
+@media (max-width:360px){.round{width:46px;height:46px}.top .date{font-size:1rem}}
 </style>
 
-</head>
-<body>
 <div class="app" id="app">
   <header class="top">
     <div class="date" id="date"></div>
+    <button class="round" id="collbtn" aria-label="Mi jardín y logros">
+      <svg viewBox="0 0 24 24" fill="#FFF4D6" stroke="var(--star)" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8 6.6 19.7l1.1-6.1L3.2 9.4l6.1-.8z"/></svg>
+      <span class="dot" id="colldot" hidden></span>
+    </button>
     <button class="round" id="soundbtn" aria-label="Sonido activado" aria-pressed="true"></button>
     <button class="round" id="setbtn" aria-label="Ajustes">
       <svg viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/></svg>
@@ -145,9 +192,12 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--water-dark);out
 
   <section class="hero" id="hero" aria-live="polite">
     <div class="bubble" id="msg">¡Hola! Soy Pipa.</div>
-    <div class="pet">
-      <svg class="drop" id="drop" viewBox="0 0 26 34" aria-hidden="true"><path d="M13 1C17 8 25 15 25 22a12 12 0 0 1-24 0C1 15 9 8 13 1Z" fill="var(--water-2)" stroke="var(--water-dark)" stroke-width="2"/></svg>
-      <div id="petsvg"></div>
+    <div class="scene">
+      <svg class="garden" id="garden" viewBox="0 0 360 176" preserveAspectRatio="xMidYMax meet" aria-hidden="true"></svg>
+      <button class="pet" id="pet" aria-label="Tocar a Pipa">
+        <svg class="drop" id="drop" viewBox="0 0 26 34" aria-hidden="true"><path d="M13 1C17 8 25 15 25 22a12 12 0 0 1-24 0C1 15 9 8 13 1Z" fill="var(--water-2)" stroke="var(--water-dark)" stroke-width="2"/></svg>
+        <span id="petsvg"></span>
+      </button>
     </div>
     <div class="grow" id="grow"></div>
   </section>
@@ -179,7 +229,30 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--water-dark);out
     <div id="cel-pet"></div>
     <h2 id="cel-t">¡Objetivo cumplido!</h2>
     <p id="cel-p">Hoy has bebido toda el agua. Pipa está muy feliz.</p>
+    <div class="extra" id="cel-x"></div>
     <button class="okbtn" id="cel-ok">¡Bien!</button>
+  </div>
+</div>
+
+<!-- colección -->
+<div class="layer" id="coll" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="coll-t">
+    <h2 id="coll-t">Mi jardín</h2>
+    <div class="set">
+      <h3 id="coll-garden"></h3>
+      <div class="gbar"><i id="coll-gbar"></i></div>
+      <p class="help" id="coll-gnext"></p>
+    </div>
+    <div class="set">
+      <h3>Visitas</h3>
+      <p class="help">Algunos días, al beber el primer vaso, viene alguien de visita.</p>
+      <div class="vis" id="coll-vis"></div>
+    </div>
+    <div class="set">
+      <h3 id="coll-bt">Logros</h3>
+      <div class="badges" id="coll-badges"></div>
+    </div>
+    <button class="close" id="coll-close">Listo</button>
   </div>
 </div>
 
@@ -201,7 +274,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--water-dark);out
     </div>
     <button class="switch" id="g-sound" role="switch" aria-checked="true">Sonidos <i></i></button>
     <p class="help"><b>Para tenerla en el móvil:</b> en iPhone, botón Compartir → «Añadir a pantalla de inicio». En Android, menú ⋮ → «Instalar aplicación» o «Añadir a pantalla de inicio».</p>
-    <p class="help">Los datos se guardan solo en este móvil.</p>
+    <p class="help">Los datos se guardan solo en este móvil. Si se borra la app del móvil, se borran también.</p>
     <button class="danger" id="g-reset">Borrar todo el historial</button>
     <button class="close" id="g-close">Listo</button>
   </div>
@@ -225,6 +298,9 @@ function load(){
   mem=d&&typeof d==="object"?d:{};
   mem.settings={...DEF,...(mem.settings||{})};
   mem.days=mem.days||{};
+  mem.visits=mem.visits||{};   // fecha -> índice de visitante
+  mem.badges=mem.badges||{};   // id de logro -> fecha
+  mem.taps=mem.taps||0;
   return mem;
 }
 function store(){try{localStorage.setItem(KEY,JSON.stringify(mem))}catch(e){}}
@@ -239,8 +315,8 @@ function goodDays(){return Object.keys(load().days).filter(reached).length}
 const STAGES=[{n:"semilla",a:"una",at:0},{n:"brote",a:"un",at:1},{n:"plantita",a:"una",at:3},{n:"planta",a:"una",at:7},{n:"planta en flor",a:"una",at:14}];
 function stageOf(n){let s=0;STAGES.forEach((x,i)=>{if(n>=x.at)s=i});return s}
 function petSVG(stage,mood){
-  const sad=mood==="thirsty";
-  const leaf=(rot,s)=>`<g transform="translate(50 37) rotate(${rot+(sad?(rot<0?-30:rot>0?30:0):0)}) scale(${s})"><path class="lf" d="M0 0 C -9 -6 -9 -19 0 -26 C 9 -19 9 -6 0 0Z" fill="var(--leaf-2)"/></g>`;
+  const sad=mood==="thirsty",sleep=mood==="sleep";
+  const leaf=(rot,s)=>`<g transform="translate(50 37) rotate(${rot+(sad||sleep?(rot<0?-26:rot>0?26:0):0)}) scale(${s})"><path class="lf" d="M0 0 C -9 -6 -9 -19 0 -26 C 9 -19 9 -6 0 0Z" fill="var(--leaf-2)"/></g>`;
   let top="";
   if(stage>=1)top+=`<line x1="50" y1="37" x2="50" y2="${sad?33:31}" stroke="var(--leaf)" stroke-width="2.5" stroke-linecap="round"/>`+leaf(-38,stage>=3?1.05:.85);
   if(stage>=2)top+=leaf(38,stage>=3?1.05:.85);
@@ -248,16 +324,86 @@ function petSVG(stage,mood){
   if(stage>=4)top+=[0,72,144,216,288].map(a=>`<ellipse cx="50" cy="1" rx="3.6" ry="5.2" fill="var(--blush)" transform="rotate(${a} 50 6)"/>`).join("")+`<circle cx="50" cy="6" r="3.2" fill="var(--sun)"/>`;
   const head=stage===0?"var(--seed)":"var(--leaf)";
   let eyes,mouth,extra="";
-  if(mood==="thirsty"){eyes=`<g class="eyes"><circle cx="42" cy="57" r="2.4" fill="var(--face)"/><circle cx="58" cy="57" r="2.4" fill="var(--face)"/></g>`;mouth=`<path d="M45 68 q5 -4 10 0" stroke="var(--face)" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;extra=`<path d="M64 56 q-2 4 0 6 q2 -2 0 -6z" fill="var(--water-2)"/>`}
-  else if(mood==="ok"){eyes=`<g class="eyes"><circle cx="42" cy="56" r="2.6" fill="var(--face)"/><circle cx="58" cy="56" r="2.6" fill="var(--face)"/></g>`;mouth=`<path d="M44 64 q6 5 12 0" stroke="var(--face)" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;extra=`<circle cx="35" cy="63" r="3.2" fill="var(--blush)" opacity=".55"/><circle cx="65" cy="63" r="3.2" fill="var(--blush)" opacity=".55"/>`}
-  else{eyes=`<path d="M38 57 q4 -4.5 8 0 M54 57 q4 -4.5 8 0" stroke="var(--face)" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;mouth=`<path d="M42.5 63 q7.5 9 15 0 z" fill="var(--face)"/>`;extra=`<circle cx="35" cy="63" r="3.6" fill="var(--blush)" opacity=".7"/><circle cx="65" cy="63" r="3.6" fill="var(--blush)" opacity=".7"/>`;
+  const cheeks=o=>`<circle cx="35" cy="63" r="3.4" fill="var(--blush)" opacity="${o}"/><circle cx="65" cy="63" r="3.4" fill="var(--blush)" opacity="${o}"/>`;
+  if(sleep){eyes=`<path d="M38 57 q4 3.5 8 0 M54 57 q4 3.5 8 0" stroke="var(--face)" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;mouth=`<ellipse cx="50" cy="65.5" rx="2.4" ry="2" fill="var(--face)"/>`;extra=cheeks(.5)+`<g class="zz" fill="var(--water-dark)" font-family="Zen Maru Gothic, sans-serif" font-weight="700"><text x="70" y="40" font-size="10">z</text><text x="78" y="30" font-size="14">Z</text></g>`}
+  else if(sad){eyes=`<g class="eyes"><circle cx="42" cy="57" r="2.4" fill="var(--face)"/><circle cx="58" cy="57" r="2.4" fill="var(--face)"/></g>`;mouth=`<path d="M45 68 q5 -4 10 0" stroke="var(--face)" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;extra=`<path d="M64 56 q-2 4 0 6 q2 -2 0 -6z" fill="var(--water-2)"/>`}
+  else if(mood==="ok"){eyes=`<g class="eyes"><circle cx="42" cy="56" r="2.6" fill="var(--face)"/><circle cx="58" cy="56" r="2.6" fill="var(--face)"/></g>`;mouth=`<path d="M44 64 q6 5 12 0" stroke="var(--face)" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;extra=cheeks(.55)}
+  else{eyes=`<path d="M38 57 q4 -4.5 8 0 M54 57 q4 -4.5 8 0" stroke="var(--face)" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;mouth=`<path d="M42.5 63 q7.5 9 15 0 z" fill="var(--face)"/>`;extra=cheeks(.7);
     if(mood==="radiant")extra+=[[14,40],[86,34],[10,66],[90,62]].map(([x,y])=>`<path class="spark" d="M${x} ${y-5} L${x+1.4} ${y-1.4} L${x+5} ${y} L${x+1.4} ${y+1.4} L${x} ${y+5} L${x-1.4} ${y+1.4} L${x-5} ${y} L${x-1.4} ${y-1.4} Z" fill="var(--sun)"/>`).join("")}
-  const tilt=sad?`transform="rotate(-6 50 80)"`:"";
+  const tilt=sad?`transform="rotate(-6 50 80)"`:sleep?`transform="rotate(5 50 80)"`:"";
   return `<svg class="p" viewBox="0 0 100 108" role="img" aria-label="Pipa, ${STAGES[stage].n}">
     <g ${tilt}>${top}<circle cx="50" cy="58" r="22" fill="${head}"/>${eyes}${mouth}</g>${extra}
     <rect x="25" y="76" width="50" height="8" rx="3" fill="var(--pot-2)"/>
     <path d="M28 84 h44 l-5 21 h-34 z" fill="var(--pot)"/>
     <path d="M33 93 q3.5 -4 7 0 q3.5 -4 7 0 q3.5 -4 7 0 q3.5 -4 7 0" stroke="var(--pot-line)" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>`;
+}
+
+/* ---------- jardín: una cosa nueva por cada día con el objetivo cumplido ---------- */
+const WOOD="#A07A55";
+const ITEMS=[
+  {n:"una mata de hierba",d:`<path d="M-9 0 Q-10 -10 -14 -16 Q-6 -9 -3 0Z M-3 0 Q-2 -14 0 -22 Q3 -12 3 0Z M3 0 Q6 -9 13 -14 Q8 -6 9 0Z" fill="var(--leaf)"/>`},
+  {n:"una margarita",d:`<path d="M0 0 V-24" stroke="var(--leaf)" stroke-width="2.2"/><path d="M0 -8 q8 -6 11 -1 q-6 3 -11 1z" fill="var(--leaf-2)"/>${[0,45,90,135,180,225,270,315].map(a=>`<ellipse cx="0" cy="-34" rx="2.8" ry="5.4" fill="#fff" stroke="#D9E2E6" stroke-width=".8" transform="rotate(${a} 0 -28)"/>`).join("")}<circle cx="0" cy="-28" r="3.6" fill="var(--sun)"/>`},
+  {n:"un tulipán",d:`<path d="M0 0 V-20" stroke="var(--leaf)" stroke-width="2.2"/><path d="M0 -4 q-9 -6 -9 -15 q6 4 9 12z" fill="var(--leaf-2)"/><path d="M-7 -20 Q-8 -31 -6 -35 L-3 -30 L0 -36 L3 -30 L6 -35 Q8 -31 7 -20 Q0 -15 -7 -20Z" fill="#E58D9C"/>`},
+  {n:"una seta",d:`<path d="M-3.5 0 Q-4.5 -8 -3 -12 H3 Q4.5 -8 3.5 0Z" fill="#F4EBDD"/><path d="M-12 -11 Q-11 -25 0 -25 Q11 -25 12 -11Z" fill="#D9574B"/><circle cx="-5" cy="-18" r="2.2" fill="#fff"/><circle cx="4" cy="-20" r="1.8" fill="#fff"/><circle cx="6" cy="-14" r="1.4" fill="#fff"/>`},
+  {n:"unas campanillas",d:`<path d="M-2 0 Q0 -22 12 -28" stroke="var(--leaf)" stroke-width="2" fill="none"/>${[[1,-14],[5,-22],[11,-27]].map(([x,y])=>`<path d="M${x-4} ${y+7} Q${x-4} ${y} ${x} ${y} Q${x+4} ${y} ${x+4} ${y+7} l1.5 1.5 h-11z" fill="#7D9BE0"/>`).join("")}`},
+  {n:"una piedra con musgo",d:`<path d="M-15 0 Q-16 -11 -4 -13 Q10 -14 15 -5 Q16 0 14 0Z" fill="#BAC0B8"/><path d="M-9 -11 q5 -5 11 -2 q-5 3 -11 2z M5 -12 q4 -2 7 1 q-3 1 -7 -1z" fill="var(--leaf-2)"/>`},
+  {n:"un girasol",d:`<path d="M0 0 V-38" stroke="var(--leaf)" stroke-width="2.6"/><path d="M0 -12 q-10 -8 -12 -2 q6 4 12 2z M0 -20 q10 -8 12 -2 q-6 4 -12 2z" fill="var(--leaf-2)"/>${[0,36,72,108,144,180,216,252,288,324].map(a=>`<ellipse cx="0" cy="-51" rx="3" ry="6" fill="#F2C230" transform="rotate(${a} 0 -43)"/>`).join("")}<circle cx="0" cy="-43" r="6" fill="#8A5A2B"/>`},
+  {n:"un caracol",d:`<path d="M-13 0 C-13 -4 -6 -4 2 -4 H10 C14 -4 15 -7 15 -11" fill="none" stroke="#D8C49A" stroke-width="5" stroke-linecap="round"/><path d="M14 -10 L12 -17 M16 -10 L17 -17" stroke="#BFA878" stroke-width="1.6" stroke-linecap="round"/><circle cx="-2" cy="-11" r="8.5" fill="#D4A04A"/><path d="M-2 -11 m0 -4.5 a4.5 4.5 0 1 1 -4 2.4 a2.3 2.3 0 1 1 2.3 2" stroke="#A8762A" stroke-width="1.6" fill="none" stroke-linecap="round"/>`},
+  {n:"un arbusto con bayas",d:`<path d="M-16 0 Q-19 -12 -9 -15 Q-5 -25 5 -20 Q16 -20 16 -8 Q18 0 14 0Z" fill="var(--leaf)"/>${[[-8,-9],[-2,-15],[6,-12],[10,-5],[-11,-3]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.3" fill="#D9574B"/>`).join("")}`},
+  {n:"una regadera",d:`<path d="M-10 0 V-15 H7 V0Z" fill="#6FA8C9"/><path d="M7 -11 L18 -20 L20 -17 L8 -6Z" fill="#6FA8C9"/><path d="M-10 -12 Q-17 -12 -15 -4" stroke="#4F86A8" stroke-width="2.6" fill="none"/><path d="M-6 -15 Q-1 -23 4 -15" stroke="#4F86A8" stroke-width="2.6" fill="none"/>`},
+  {n:"una valla de madera",d:`${[-12,-2,8].map(x=>`<path d="M${x} 0 V-17 l2.5 -3 l2.5 3 V0Z" fill="${WOOD}"/>`).join("")}<rect x="-15" y="-14" width="28" height="3" rx="1" fill="#8A6545"/><rect x="-15" y="-6" width="28" height="3" rx="1" fill="#8A6545"/>`},
+  {n:"un molinillo de colores",d:`<path d="M0 0 V-28" stroke="${WOOD}" stroke-width="2.4"/><g class="spin"><path d="M0 -30 L0 -42 L8 -36Z" fill="#E58D9C"/><path d="M0 -30 L12 -30 L6 -22Z" fill="var(--sun)"/><path d="M0 -30 L0 -18 L-8 -24Z" fill="var(--water-2)"/><path d="M0 -30 L-12 -30 L-6 -38Z" fill="var(--leaf-2)"/><circle cx="0" cy="-30" r="1.8" fill="#fff"/></g>`},
+  {n:"una casita para pájaros",d:`<rect x="-1.8" y="-34" width="3.6" height="34" fill="${WOOD}"/><path d="M-10 -32 V-46 L0 -54 L10 -46 V-32Z" fill="#E7A9B4"/><path d="M-13 -45 L0 -56 L13 -45" stroke="var(--pot-2)" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="0" cy="-41" r="3.2" fill="#5A4433"/>`},
+  {n:"un cerezo",d:`<path d="M-1 0 Q0 -14 -3 -26 M0 -14 Q5 -20 8 -26" stroke="${WOOD}" stroke-width="3.4" fill="none" stroke-linecap="round"/>${[[-10,-30,9],[2,-36,10],[12,-29,8],[-3,-24,7],[8,-21,6]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#F6C9D2"/>`).join("")}${[[-12,-32],[3,-40],[13,-31],[-2,-27],[6,-34]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.6" fill="#E58D9C"/>`).join("")}`}
+];
+// huecos alrededor de la maceta: [x, y, escala]; primero los de delante y cerca
+const SLOTS=[[122,168,1.35],[238,168,1.35],[84,168,1.35],[276,168,1.35],[104,150,1.05],[256,150,1.05],[46,168,1.35],[314,168,1.35],[66,150,1.05],[294,150,1.05],[12,168,1.35],[348,168,1.35],[30,150,1.05],[330,150,1.05]];
+
+/* ---------- visitas sorpresa ---------- */
+const VISITORS=[
+  {n:"una mariquita",s:"mariquita",d:`<g class="flap"><ellipse cx="-6" cy="-3" rx="7" ry="4" fill="#fff" opacity=".7"/><ellipse cx="6" cy="-3" rx="7" ry="4" fill="#fff" opacity=".7"/></g><circle cx="0" cy="3" r="8" fill="#D9574B"/><path d="M0 -5 V11" stroke="#2A2A2A" stroke-width="1.4"/><circle cx="-4" cy="1" r="1.8" fill="#2A2A2A"/><circle cx="4" cy="5" r="1.8" fill="#2A2A2A"/><circle cx="-3" cy="7" r="1.4" fill="#2A2A2A"/><circle cx="4" cy="-1" r="1.4" fill="#2A2A2A"/><path d="M-5 -5 A5 5 0 0 1 5 -5Z" fill="#2A2A2A"/><path d="M-2 -8 l-3 -4 M2 -8 l3 -4" stroke="#2A2A2A" stroke-width="1.2" stroke-linecap="round"/>`},
+  {n:"una mariposa",s:"mariposa",d:`<g class="flap"><ellipse cx="-8" cy="-5" rx="8" ry="7" fill="#C9A0DC"/><ellipse cx="8" cy="-5" rx="8" ry="7" fill="#C9A0DC"/><ellipse cx="-6" cy="6" rx="5.5" ry="5" fill="#E58D9C"/><ellipse cx="6" cy="6" rx="5.5" ry="5" fill="#E58D9C"/><circle cx="-8" cy="-5" r="2.4" fill="#fff" opacity=".8"/><circle cx="8" cy="-5" r="2.4" fill="#fff" opacity=".8"/></g><rect x="-1.4" y="-9" width="2.8" height="19" rx="1.4" fill="#4A3A4A"/><path d="M-1 -9 l-3 -5 M1 -9 l3 -5" stroke="#4A3A4A" stroke-width="1.2" stroke-linecap="round"/>`},
+  {n:"una abeja",s:"abeja",d:`<g class="flap"><ellipse cx="-3" cy="-8" rx="4.5" ry="6" fill="#fff" opacity=".85" stroke="#C9D8DF"/><ellipse cx="4" cy="-8" rx="4.5" ry="6" fill="#fff" opacity=".85" stroke="#C9D8DF"/></g><ellipse cx="0" cy="0" rx="10" ry="7" fill="#F2C230"/><path d="M-3 -6.5 V6.5 M3 -6.5 V6.5" stroke="#2A2A2A" stroke-width="2.4"/><circle cx="-7" cy="-1" r="1.3" fill="#2A2A2A"/><path d="M10 0 l3 0" stroke="#2A2A2A" stroke-width="1.6" stroke-linecap="round"/>`},
+  {n:"un pajarito",s:"pajarito",d:`<path d="M9 2 l9 -4 l-3 7z" fill="#5A92B3"/><circle cx="0" cy="0" r="10" fill="#6FA8C9"/><ellipse cx="-2" cy="4" rx="6" ry="5" fill="#D8EEFB"/><g class="flap"><path d="M2 -2 q8 -2 9 6 q-7 1 -9 -6z" fill="#4F86A8"/></g><path d="M-10 -1 l-6 2 l6 2z" fill="#F2A33A"/><circle cx="-5" cy="-3" r="1.6" fill="#2A2A2A"/>`},
+  {n:"una libélula",s:"libélula",d:`<g class="flap"><ellipse cx="-9" cy="-4" rx="9" ry="3" fill="#BFE3F5" opacity=".9" transform="rotate(-12 -9 -4)"/><ellipse cx="9" cy="-4" rx="9" ry="3" fill="#BFE3F5" opacity=".9" transform="rotate(12 9 -4)"/><ellipse cx="-8" cy="2" rx="8" ry="2.6" fill="#BFE3F5" opacity=".9" transform="rotate(10 -8 2)"/><ellipse cx="8" cy="2" rx="8" ry="2.6" fill="#BFE3F5" opacity=".9" transform="rotate(-10 8 2)"/></g><rect x="-1.6" y="-8" width="3.2" height="22" rx="1.6" fill="#3E9A8C"/><circle cx="0" cy="-8" r="3" fill="#2F7F73"/>`},
+  {n:"una luciérnaga",s:"luciérnaga",d:`<circle class="glow" cx="0" cy="5" r="11" fill="#F7E27A"/><g class="flap"><ellipse cx="-4" cy="-4" rx="4" ry="6" fill="#fff" opacity=".8"/><ellipse cx="4" cy="-4" rx="4" ry="6" fill="#fff" opacity=".8"/></g><ellipse cx="0" cy="0" rx="4" ry="6" fill="#5A4433"/><ellipse cx="0" cy="6" rx="3.6" ry="3.4" fill="#F2C94C"/><path d="M-1 -6 l-3 -4 M1 -6 l3 -4" stroke="#5A4433" stroke-width="1.2" stroke-linecap="round"/>`}
+];
+function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function visitorFor(k){const h=hashStr("pipa-visita-"+k);return h%100<40?(h>>>8)%VISITORS.length:null}
+const seenVisitors=()=>{const c={};Object.values(load().visits).forEach(v=>{c[v]=(c[v]||0)+1});return c};
+
+function gardenSVG(opts={}){
+  const n=Math.min(goodDays(),ITEMS.length);
+  let g=`<path d="M-40 176 V156 Q60 140 180 150 T400 152 V176Z" fill="var(--good-soft)"/>`;
+  const order=[...Array(n).keys()].sort((a,b)=>SLOTS[a][1]-SLOTS[b][1]);
+  for(const i of order){const [x,y,s]=SLOTS[i];g+=`<g transform="translate(${x} ${y}) scale(${s})"><g class="${opts.popIndex===i?"pop":""}">${ITEMS[i].d}</g></g>`}
+  const v=load().visits[today()];
+  if(v!=null){const right=hashStr("lado"+today())%2===0;g+=`<g transform="translate(${right?300:62} 56) scale(1.25)"><g class="${opts.arrive?"arrive":""}"><g class="bob">${VISITORS[v].d}</g></g></g>`}
+  return g;
+}
+
+/* ---------- logros (una vez conseguidos, no se pierden) ---------- */
+function streakMax(){const ks=Object.keys(load().days).filter(reached).sort();let best=0,cur=0,prev=null;for(const k of ks){cur=prev&&addDays(prev,1)===k?cur+1:1;best=Math.max(best,cur);prev=k}return best}
+function bestWeek(){const c={};Object.keys(load().days).filter(reached).forEach(k=>{const d=new Date(k+"T12:00:00");const m=addDays(k,-((d.getDay()+6)%7));c[m]=(c[m]||0)+1});return Math.max(0,...Object.values(c))}
+const BADGES=[
+  {id:"primer",e:"💧",n:"Primer vaso",d:"Apunta tu primer vaso de agua.",t:()=>Object.values(load().days).some(d=>d.log&&d.log.length)},
+  {id:"objetivo",e:"🌱",n:"Primer objetivo",d:"Cumple el objetivo un día.",t:()=>goodDays()>=1},
+  {id:"madruga",e:"☀️",n:"Buenos días",d:"Bebe un vaso antes de las 10 de la mañana.",t:()=>Object.values(load().days).some(d=>(d.log||[]).some(x=>new Date(x.t).getHours()<10))},
+  {id:"cosquillas",e:"😄",n:"Cosquillas",d:"Toca a Pipa 5 veces.",t:()=>load().taps>=5},
+  {id:"tres",e:"🌿",n:"Tres días",d:"Cumple el objetivo 3 días.",t:()=>goodDays()>=3},
+  {id:"seguidos",e:"🤝",n:"Tres seguidos",d:"Cumple el objetivo 3 días seguidos.",t:()=>streakMax()>=3},
+  {id:"visita",e:"🐞",n:"Primera visita",d:"Recibe una visita en el jardín.",t:()=>Object.keys(load().visits).length>=1},
+  {id:"siete",e:"🌻",n:"Siete días",d:"Cumple el objetivo 7 días.",t:()=>goodDays()>=7},
+  {id:"semana",e:"📅",n:"Gran semana",d:"Cumple el objetivo 5 días de una misma semana.",t:()=>bestWeek()>=5},
+  {id:"flor",e:"🌸",n:"Jardín en flor",d:"Cumple el objetivo 14 días.",t:()=>goodDays()>=14},
+  {id:"coleccion",e:"🦋",n:"Todas las visitas",d:"Recibe la visita de los 6 animalitos.",t:()=>Object.keys(seenVisitors()).length>=VISITORS.length},
+  {id:"mes",e:"🏆",n:"Un mes",d:"Cumple el objetivo 30 días.",t:()=>goodDays()>=30}
+];
+function checkBadges(){
+  const B=load().badges,got=[];
+  for(const b of BADGES)if(!B[b.id]&&b.t()){B[b.id]=today();got.push(b)}
+  if(got.length){load().unseen=true;store()}
+  return got;
 }
 
 /* ---------- sonidos (generados, sin archivos) ---------- */
@@ -277,16 +423,66 @@ const SND={
   drink(){const c=ac();if(!c)return;const t=c.currentTime+.01;note(c,t,480,260,.13);note(c,t+.14,560,300,.13);note(c,t+.28,660,340,.16)},
   goal(){const c=ac();if(!c)return;const t=c.currentTime+.01;[523,659,784,1047].forEach((f,i)=>note(c,t+i*.13,f,0,.32,"triangle",.24));[523,659,784].forEach(f=>note(c,t+.6,f,0,.8,"sine",.12))},
   grow(){const c=ac();if(!c)return;const t=c.currentTime+.01;note(c,t,300,900,.45,"sine",.18);[1175,1397,1568,1760].forEach((f,i)=>note(c,t+.45+i*.09,f,0,.25,"triangle",.14))},
+  visit(){const c=ac();if(!c)return;const t=c.currentTime+.01;[0,.16,.32].forEach((d,i)=>{note(c,t+d,1800+i*150,2600+i*150,.08,"sine",.12);note(c,t+d+.07,2400,1900,.07,"sine",.1)})},
+  badge(){const c=ac();if(!c)return;const t=c.currentTime+.01;[880,1109,1319,1760].forEach((f,i)=>note(c,t+i*.08,f,0,.4,"triangle",.13))},
+  giggle(){const c=ac();if(!c)return;const t=c.currentTime+.01;[0,.11,.22].forEach((d,i)=>note(c,t+d,760-i*40,980-i*40,.09,"sine",.13))},
   undo(){const c=ac();if(!c)return;const t=c.currentTime+.01;note(c,t,330,200,.25,"sine",.16)},
   tap(){const c=ac();if(!c)return;note(c,c.currentTime+.01,700,0,.07,"sine",.1)}
 };
 const buzz=ms=>{try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}};
 
-/* ---------- utilidades de texto ---------- */
+/* ---------- textos: Pipa no dice siempre lo mismo ---------- */
 function fmtC(n){const w=Math.floor(n),h=Math.round((n-w)*2)/2;return (w||h?"":"0")+(w?w:"")+(h?"½":"")}
 function ml(n){const v=Math.round(n*S().glass);return v>=1000?(v/1000).toLocaleString("es-ES",{maximumFractionDigits:2})+" litros":v+" ml"}
 const hi=()=>S().name?`, ${S().name}`:"";
-const pick=a=>a[Math.floor(Math.random()*a.length)];
+const pick=(a,not)=>{const b=a.length>1?a.filter(x=>x!==not):a;return b[Math.floor(Math.random()*b.length)]};
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const GREET=[
+  ()=>`¡Feliz domingo${hi()}! Hoy toca descansar… y beber agua.`,
+  ()=>`¡Feliz lunes${hi()}! Empezamos la semana con agua.`,
+  ()=>`¡Buen martes${hi()}! ¿Me das un poquito de agua?`,
+  ()=>`¡Ya es miércoles${hi()}! Mitad de semana, ¡a por el vaso!`,
+  ()=>`¡Hola, jueves${hi()}! Tengo sed… ¿bebemos?`,
+  ()=>`¡Por fin viernes${hi()}! ¿Lo celebramos con agua?`,
+  ()=>`¡Feliz sábado${hi()}! Un vaso de agua y a disfrutar.`
+];
+const CHEERS=[()=>`¡Glu, glu! Qué rico${hi()}.`,()=>"¡Gracias! Me encanta el agua.",()=>"¡Así me gusta!",()=>`¡Muy bien${hi()}!`,()=>"¡Mira cómo bailo!",()=>"¡Qué fresquita!",()=>"¡Mis raíces están de fiesta!",()=>"¡Ole, ole y ole!",()=>"Gota a gota se llena el vaso.",()=>"¡Me siento más verde que nunca!"];
+const TAPS=[
+  ()=>"¡Jijiji, me haces cosquillas!",
+  ()=>"¿Qué le dice una gota a otra? ¡Nos vemos en el vaso!",
+  ()=>"¿Sabías que más de la mitad de tu cuerpo es agua? ¡Como yo!",
+  ()=>"¿Por qué las plantas nunca se pierden? ¡Porque tienen raíces!",
+  ()=>`Hoy tienes muy buena cara${hi()}.`,
+  ()=>"¿Qué hace una planta cuando está contenta? ¡Echar flores!",
+  ()=>"Me encanta que vengas a verme.",
+  ()=>"Si estoy verde es de salud, ¡no de envidia!",
+  ()=>"¿Bailamos? ¡Un, dos, tres!",
+  ()=>"Mis hojas te mandan un abrazo.",
+  ()=>"¿Sabes cuál es mi bebida favorita? ¡Adivina!",
+  ()=>"Con un poco de agua, todo se ve mejor."
+];
+let awakeUntil=0;
+function moodNow(n,g){
+  const h=new Date().getHours(),awake=Date.now()<awakeUntil;
+  if(!awake&&(h>=22||(h<10&&n<=0)))return "sleep";
+  if(n<=0)return "thirsty";if(n>=g)return "radiant";if(n>=g/2)return "happy";return "ok";
+}
+let msgKey="",msgText="";
+function defaultMsg(n,g){
+  const h=new Date().getHours(),mood=moodNow(n,g);
+  const last=day().log.slice(-1)[0],idle=last&&Date.now()-last.t>2*3600e3&&h<22;
+  const key=[today(),n,g,mood,idle?1:0].join("|");
+  if(key===msgKey)return msgText;
+  let t;const left=g-n;
+  if(mood==="sleep")t=h>=22?`Zzz… Buenas noches${hi()}. Mañana más.`:"Zzz… Pipa está dormida. ¿La despiertas con un vaso de agua?";
+  else if(n<=0)t=h<14?GREET[new Date().getDay()]():pick([`Tengo sed${hi()}… ¿bebemos un vaso de agua?`,"¡Hola! Hoy aún no hemos bebido nada. ¿Empezamos?",`Uf, qué sed${hi()}. ¿Me das agüita?`]);
+  else if(left<=0)t=pick([`¡Objetivo cumplido${hi()}! Estoy muy feliz.`,"¡Lo has conseguido! Soy la planta más feliz del mundo.","¡Qué gusto da estar tan bien regada!"]);
+  else if(idle)t=pick([`Hace rato que no bebemos. ¿Un vasito${hi()}?`,"Me estoy quedando seca… ¿un traguito?","¿Te acuerdas de mí? ¡Tengo sed!"]);
+  else if(left<=1)t=`¡Solo te queda ${left<1?"medio vaso":"un vaso"}!`;
+  else if(n>=g/2)t=pick([`¡Ya vamos por la mitad! Te quedan ${fmtC(left)} vasos.`,`¡Más de la mitad! Faltan ${fmtC(left)} vasos.`]);
+  else t=pick([`¡Muy bien! Te quedan ${fmtC(left)} vasos.`,`¡Vamos bien! Faltan ${fmtC(left)} vasos.`]);
+  msgKey=key;msgText=t;return t;
+}
 
 /* ---------- pantalla ---------- */
 function glassSVG(fill){
@@ -298,27 +494,18 @@ function glassSVG(fill){
 function dropSVG(full,today){
   return `<svg viewBox="0 0 30 34" aria-hidden="true"><path d="M15 2C19 9 27 16 27 22a12 12 0 0 1-24 0C3 16 11 9 15 2Z" fill="${full?"var(--water)":"none"}" stroke="${full?"var(--water-dark)":today?"var(--ink)":"var(--line)"}" stroke-width="2.4"/>${full?`<path d="M9.5 22.5a5.5 5.5 0 0 0 4 5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>`:""}</svg>`;
 }
-let lastMsg="";
-function moodNow(n,g){if(n<=0)return "thirsty";if(n>=g)return "radiant";if(n>=g/2)return "happy";return "ok"}
-function defaultMsg(n,g){
-  const left=g-n;
-  if(n<=0){const h=new Date().getHours();return h<12?`¡Buenos días${hi()}! Tengo sed… ¿bebemos un vaso de agua?`:`Tengo sed${hi()}… ¿bebemos un vaso de agua?`}
-  if(left<=0)return `¡Objetivo cumplido${hi()}! Estoy muy feliz.`;
-  const last=day().log.slice(-1)[0];
-  if(last&&Date.now()-last.t>2*3600e3&&new Date().getHours()<22)return `Hace rato que no bebemos. ¿Un vasito${hi()}?`;
-  if(left<=1)return `¡Solo te queda ${left<1?"medio vaso":"un vaso"}!`;
-  if(n>=g/2)return `¡Ya vamos por la mitad! Te quedan ${fmtC(left)} vasos.`;
-  return `¡Muy bien! Te quedan ${fmtC(left)} vasos.`;
-}
-function render(msg){
+function render(msg,gopts){
   const k=today(),n=total(k),g=goalOf(k);
   const d=new Date();
   $("date").innerHTML=`${d.toLocaleDateString("es-ES",{weekday:"long"})}<small>${d.toLocaleDateString("es-ES",{day:"numeric",month:"long"})}</small>`;
-  const st=stageOf(goodDays());
+  const gd=goodDays(),st=stageOf(gd);
   $("petsvg").innerHTML=petSVG(st,moodNow(n,g));
+  $("garden").innerHTML=gardenSVG(gopts||{});
   $("msg").textContent=msg||defaultMsg(n,g);
   const next=STAGES[st+1];
-  $("grow").innerHTML=next?`Pipa es ${STAGES[st].a} <b>${STAGES[st].n}</b>. ${next.at-goodDays()===1?"Un día más":`${next.at-goodDays()} días más`} cumpliendo el objetivo y crecerá.`:`Pipa ha <b>florecido</b>. ¡Sigue cuidándola!`;
+  let grow=next?`Pipa es ${STAGES[st].a} <b>${STAGES[st].n}</b>. ${next.at-gd===1?"Un día más":`${next.at-gd} días más`} cumpliendo el objetivo y crecerá.`:`Pipa ha <b>florecido</b>. ¡Sigue cuidándola!`;
+  if(gd<ITEMS.length)grow+=reached(k)?`<br>Mañana puede aparecer algo nuevo en el jardín.`:`<br>Si cumples hoy, aparecerá <b>${ITEMS[gd].n}</b> en el jardín.`;
+  $("grow").innerHTML=grow;
   const c=$("count");c.classList.toggle("done",n>=g);
   c.innerHTML=`<b>${fmtC(n)}</b><span>de ${g} vasos</span><small>${ml(n)} de ${ml(g)}</small>`;
   c.setAttribute("aria-label",`${fmtC(n)} de ${g} vasos`);
@@ -331,25 +518,41 @@ function render(msg){
   $("week").innerHTML=["L","M","X","J","V","S","D"].map((l,i)=>{const kk=addDays(mon,i);return `<div class="d${kk===k?" today":""}">${dropSVG(reached(kk),kk===k)}<span class="lbl">${l}</span></div>`}).join("");
   const sb=$("soundbtn");sb.setAttribute("aria-pressed",S().sound?"true":"false");sb.setAttribute("aria-label",S().sound?"Sonido activado":"Sonido desactivado");
   sb.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="var(--water-soft)"/>${S().sound?`<path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/>`:`<path d="M16 9.5l5 5M21 9.5l-5 5"/>`}</svg>`;
+  $("colldot").hidden=!load().unseen;
 }
+function animate(cls){const hero=$("hero");hero.classList.remove("jump","dance","wiggle");void hero.offsetWidth;hero.classList.add(cls)}
 
 /* ---------- acciones ---------- */
 let busy=false,tT;
-function toast(t){const e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(tT);tT=setTimeout(()=>e.classList.remove("show"),1800)}
+function toast(t,ms=2200){const e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(tT);tT=setTimeout(()=>e.classList.remove("show"),ms)}
 function add(v){
   if(busy)return;busy=true;setTimeout(()=>busy=false,500);
-  const k=today(),before=total(k),g=goalOf(k),stBefore=stageOf(goodDays());
-  const d=day(k);d.goal=S().goal;d.log.push({t:Date.now(),v});store();
+  const k=today(),before=total(k),g=goalOf(k),gdBefore=goodDays(),stBefore=stageOf(gdBefore);
+  const wasAsleep=moodNow(before,g)==="sleep";
+  const d=day(k);d.goal=S().goal;d.log.push({t:Date.now(),v});
+  awakeUntil=Date.now()+10*60e3;
+  // visita sorpresa: se descubre con el primer vaso del día
+  let visitor=null;
+  if(before<=0&&load().visits[k]==null){const vi=visitorFor(k);if(vi!=null){load().visits[k]=vi;visitor=VISITORS[vi]}}
+  store();
   const after=total(k);
   SND.drink();buzz(30);
   const drop=$("drop");drop.classList.remove("go");void drop.offsetWidth;drop.classList.add("go");
-  const hero=$("hero");hero.classList.remove("jump");void hero.offsetWidth;hero.classList.add("jump");
-  const cheers=[`¡Glu, glu! Qué rico${hi()}.`,"¡Gracias! Me encanta el agua.","¡Así me gusta!",`¡Muy bien${hi()}!`];
+  animate(Math.random()<.5?"jump":"dance");
+  const badges=checkBadges();
   if(before<g&&after>=g){
-    render();
-    const stAfter=stageOf(goodDays());
-    setTimeout(()=>celebrate(stAfter>stBefore,stAfter),650);
-  }else render(after>=g?`¡Más agua todavía! Qué bien${hi()}.`:pick(cheers)+(g-after>0?` Te quedan ${fmtC(g-after)}.`:""));
+    const gdAfter=goodDays();
+    render(null,{popIndex:gdAfter<=ITEMS.length?gdAfter-1:null,arrive:!!visitor});
+    const stAfter=stageOf(gdAfter);
+    setTimeout(()=>celebrate(stAfter>stBefore,stAfter,gdAfter<=ITEMS.length?ITEMS[gdAfter-1]:null,badges,visitor),650);
+    return;
+  }
+  let m;
+  if(visitor){m=`¡Mira! ${cap(visitor.n)} ha venido a visitarnos.`;setTimeout(()=>SND.visit(),450)}
+  else if(wasAsleep)m=pick(["¡Uy, buenos días! Qué despertar tan rico.",`¡Ay, me había dormido! Gracias${hi()}.`,"¡Buenos días! Ya estoy despierta."]);
+  else m=after>=g?`¡Más agua todavía! Qué bien${hi()}.`:pick(CHEERS)()+(g-after>0?` Te quedan ${fmtC(g-after)}.`:"");
+  render(m,{arrive:!!visitor});
+  if(badges.length)setTimeout(()=>{SND.badge();toast("⭐ Nuevo logro: "+badges.map(b=>b.n).join(", "),3200)},visitor?1300:700);
 }
 function undo(){
   const d=day();if(!d.log.length)return;
@@ -357,27 +560,64 @@ function undo(){
   d.log.pop();store();SND.undo();buzz(15);
   render();toast(wasDone&&total(k)<g?"Quitado. Aún falta un poco para el objetivo.":"Quitado el último.");
 }
-function celebrate(grew,st){
+let lastTap="";
+function tapPet(){
+  const k=today(),n=total(k),g=goalOf(k);
+  load().taps++;
+  const asleep=moodNow(n,g)==="sleep";
+  awakeUntil=Date.now()+3*60e3;
+  let m;
+  if(asleep)m=new Date().getHours()>=22?"¡Uy! Ya estaba soñando… Buenas noches.":"¡Ay! Me has despertado. ¿Bebemos un vaso de agua?";
+  else{const f=pick(TAPS,lastTap);lastTap=f;m=f()}
+  store();
+  const badges=checkBadges();
+  SND.giggle();buzz(20);animate(Math.random()<.5?"wiggle":"dance");
+  render(m);
+  if(badges.length)setTimeout(()=>{SND.badge();toast("⭐ Nuevo logro: "+badges.map(b=>b.n).join(", "),3200)},600);
+}
+function celebrate(grew,st,item,badges,visitor){
   const n=load().settings.name;
   $("cel-pet").innerHTML=petSVG(st,"radiant");
   $("cel-t").textContent=grew?"¡Pipa ha crecido!":"¡Objetivo cumplido!";
   $("cel-p").textContent=grew?`Ahora es ${STAGES[st].a} ${STAGES[st].n}. ¡Gracias por cuidarla${n?", "+n:""}!`:`Hoy has bebido toda el agua${n?", "+n:""}. Pipa está muy feliz.`;
+  const x=[];
+  if(item)x.push(`🌼 En el jardín ha aparecido ${item.n}.`);
+  if(visitor)x.push(`✨ Además, hoy ha venido ${visitor.n} de visita.`);
+  badges.forEach(b=>x.push(`⭐ Nuevo logro: ${b.n}`));
+  $("cel-x").innerHTML=x.map(t=>`<div>${t}</div>`).join("");
   $("cel").hidden=false;
   if(grew)SND.grow();else SND.goal();
+  if(badges.length)setTimeout(()=>SND.badge(),1100);
   buzz([40,60,40]);
   if(!matchMedia("(prefers-reduced-motion: reduce)").matches){
     const card=$("cel").querySelector(".card");
     card.querySelectorAll(".confetti").forEach(e=>e.remove());
     for(let i=0;i<16;i++){const c=document.createElement("i");c.className="confetti";c.style.left=(5+Math.random()*90)+"%";c.style.animationDelay=(Math.random()*.6)+"s";if(i%3===0)c.style.background="var(--leaf-2)";if(i%4===0)c.style.background="var(--sun)";card.appendChild(c)}
   }
-  $("cel-ok").focus();
+  $("cel-ok").focus({preventScroll:true});
 }
 $("cel-ok").addEventListener("click",()=>{$("cel").hidden=true;SND.tap();render()});
 $("add1").addEventListener("click",()=>add(1));
 $("addHalf").addEventListener("click",()=>add(.5));
 $("addBottle").addEventListener("click",()=>add(500/S().glass));
 $("undo").addEventListener("click",undo);
+$("pet").addEventListener("click",tapPet);
 $("soundbtn").addEventListener("click",()=>{S().sound=!S().sound;store();render();if(S().sound)SND.tap();toast(S().sound?"Sonido activado":"Sonido desactivado")});
+
+/* ---------- colección: jardín, visitas y logros ---------- */
+function renderColl(){
+  const gd=goodDays(),n=Math.min(gd,ITEMS.length);
+  $("coll-garden").textContent=`Jardín: ${n} de ${ITEMS.length} cosas`;
+  $("coll-gbar").style.width=(n/ITEMS.length*100)+"%";
+  $("coll-gnext").innerHTML=n<ITEMS.length?`La próxima vez que cumplas el objetivo aparecerá <b>${ITEMS[n].n}</b>.`:"¡El jardín está completo! Pipa está orgullosa.";
+  const seen=seenVisitors();
+  $("coll-vis").innerHTML=VISITORS.map((v,i)=>{const c=seen[i]||0;return `<div class="${c?"":"no"}"><svg viewBox="-17 -15 34 30" aria-hidden="true">${v.d}</svg>${c?cap(v.s):"?"}<small>${c?(c===1?"1 visita":c+" visitas"):"aún no"}</small></div>`}).join("");
+  const B=load().badges,got=BADGES.filter(b=>B[b.id]).length;
+  $("coll-bt").textContent=`Logros: ${got} de ${BADGES.length}`;
+  $("coll-badges").innerHTML=BADGES.map(b=>`<div class="badge${B[b.id]?"":" no"}"><span class="em" aria-hidden="true">${b.e}</span><b>${b.n}</b><small>${b.d}</small></div>`).join("");
+}
+$("collbtn").addEventListener("click",()=>{renderColl();load().unseen=false;store();$("coll").hidden=false;SND.tap();$("coll-close").focus({preventScroll:true});$("coll").querySelector(".card").scrollTop=0;render()});
+$("coll-close").addEventListener("click",()=>{$("coll").hidden=true;render()});
 
 /* ---------- ajustes ---------- */
 const SIZES=[150,200,250,300];
@@ -394,26 +634,30 @@ $("g-close").addEventListener("click",()=>{$("settings").hidden=true;render()});
 $("g-minus").addEventListener("click",()=>setGoal(S().goal-1));
 $("g-plus").addEventListener("click",()=>setGoal(S().goal+1));
 $("g-size").addEventListener("click",e=>{const b=e.target.closest("[data-size]");if(!b)return;S().glass=+b.dataset.size;store();renderSet();render();SND.tap()});
-$("g-name").addEventListener("input",()=>{S().name=$("g-name").value.trim().slice(0,20);store()});
+$("g-name").addEventListener("input",()=>{S().name=$("g-name").value.trim().slice(0,20);msgKey="";store()});
 $("g-sound").addEventListener("click",()=>{S().sound=!S().sound;store();renderSet();render();if(S().sound)SND.tap()});
 $("g-reset").addEventListener("click",()=>{
   const b=$("g-reset");
   if(!b.classList.contains("sure")){b.classList.add("sure");b.textContent="Toca otra vez para borrarlo todo";setTimeout(()=>{b.classList.remove("sure");b.textContent="Borrar todo el historial"},4000);return}
-  load().days={};store();b.classList.remove("sure");b.textContent="Borrar todo el historial";renderSet();render();toast("Historial borrado");
+  const m=load();m.days={};m.visits={};m.badges={};m.taps=0;m.unseen=false;store();b.classList.remove("sure");b.textContent="Borrar todo el historial";renderSet();render();toast("Historial borrado");
 });
-document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(!$("settings").hidden){$("settings").hidden=true;render()}else if(!$("cel").hidden){$("cel").hidden=true;render()}});
+document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;["settings","coll","cel"].forEach(id=>{if(!$(id).hidden){$(id).hidden=true;render()}})});
 
-/* cambio de día y recordatorio al volver a la app */
+/* cambio de día y al volver a la app */
 let shown=today();
 function refresh(){if(today()!==shown){shown=today()}render()}
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)refresh()});
-setInterval(()=>{if(!document.hidden&&today()!==shown)refresh()},60000);
+setInterval(()=>{if(!document.hidden)refresh()},60000);
 
 /* app instalable: solo cuando se sirve como app propia */
 try{if(document.querySelector('meta[name="pipa-pwa"]')&&"serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{})}catch(e){}
 
+// quien ya usaba la app recibe sus logros sin avisos de golpe
+if(!load().badgesInit){load().badgesInit=true;store()}
+checkBadges();
 render();
-window.__pipa={add,undo,total,today,load,stageOf,goodDays};
+window.__pipa={add,undo,total,today,load,stageOf,goodDays,tapPet,checkBadges,visitorFor,ITEMS,VISITORS,render,
+  _awake(ms){awakeUntil=Date.now()+ms}};
 })();
 </script>
 

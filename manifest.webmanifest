@@ -1,6 +1,6 @@
 {
-  "name": "Agua con Pipa",
-  "short_name": "Pipa agua",
+  "name": "Pipa",
+  "short_name": "Pipa",
   "description": "Recordatorio sencillo para beber agua cada día con Pipa.",
   "lang": "es",
   "start_url": "./",
