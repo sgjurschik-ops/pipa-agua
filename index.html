@@ -24,7 +24,7 @@
 :root{
   --bg:#EAF4F8; --surface:#FFFFFF; --ink:#1C2A31; --muted:#4F626B; --line:#CFE0E8;
   --water:#2F86C8; --water-dark:#1F6AA3; --water-2:#7CC3EE; --water-soft:#D8EEFB;
-  --leaf:#7FA35C; --leaf-2:#9DBE7A; --seed:#C9A27A; --pot:#5B6F96; --pot-2:#4A5D84; --pot-line:#8FA0C2; --face:#2F302C; --blush:#F0A3AE;
+  --leaf:#7FA35C; --leaf-2:#9DBE7A; --seed:#C9A27A; --face:#2F302C; --blush:#F0A3AE;
   --good:#3E8A2E; --good-soft:#E3F2DA; --sun:#F2C94C; --danger:#B9473F; --star:#E0A526;
   --f:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",system-ui,sans-serif;
   color-scheme:light;
@@ -47,10 +47,10 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--water-dark);out
 
 /* Pipa en su jardín */
 .hero{background:var(--surface);border-radius:28px;padding:16px 16px 12px;display:grid;justify-items:center;gap:6px;position:relative;overflow:hidden}
-.bubble{background:var(--water-soft);border-radius:20px;padding:12px 16px;font:700 1.2rem/1.35 var(--f);text-align:center;width:100%;position:relative;text-wrap:balance;min-height:3.1em;display:grid;place-items:center}
+.bubble{background:var(--water-soft);border-radius:20px;padding:12px 16px;font:700 1.2rem/1.35 var(--f);text-align:center;width:100%;position:relative;text-wrap:balance;min-height:3.1em;display:grid;place-items:center;z-index:1}
 .bubble::after{content:"";position:absolute;left:50%;bottom:-11px;margin-left:-11px;border:11px solid transparent;border-bottom:0;border-top-color:var(--water-soft)}
 .scene{position:relative;width:100%;height:176px;margin-top:4px}
-.scene svg.garden{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.scene svg.garden{position:absolute;inset:0;width:100%;height:100%;overflow:hidden}
 .pet{position:absolute;left:50%;bottom:0;width:150px;height:164px;margin-left:-75px;border:0;background:none;padding:0;border-radius:24px}
 .pet svg.p{width:150px;height:164px;display:block;transform-origin:50% 100%;overflow:visible}
 .lf{transform-box:fill-box;transform-origin:50% 100%;animation:sway 4s ease-in-out infinite}
@@ -80,9 +80,14 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--water-dark);out
 .garden .flap{transform-box:fill-box;transform-origin:50% 50%;animation:flap .5s ease-in-out infinite}
 @keyframes flap{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.45)}}
 .garden .spin{transform-box:fill-box;transform-origin:center;animation:spin 5s linear infinite}
+.garden .spin-slow{transform-box:fill-box;transform-origin:center;animation:spin 24s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .garden .glow{animation:glow 1.8s ease-in-out infinite}
 @keyframes glow{0%,100%{opacity:.25}50%{opacity:.85}}
+.garden .kite{transform-box:fill-box;transform-origin:50% 0;animation:kite 4s ease-in-out infinite}
+@keyframes kite{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg) translateY(-3px)}}
+.garden .drift{animation:drift linear infinite;opacity:0}
+@keyframes drift{0%{transform:translate(0,-24px) rotate(0);opacity:0}10%{opacity:1}88%{opacity:1}100%{transform:translate(22px,170px) rotate(220deg);opacity:0}}
 .grow{font-size:.88rem;color:var(--muted);text-align:center;line-height:1.45}
 .grow b{color:var(--ink)}
 
@@ -130,11 +135,27 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--water-dark);out
 .celebrate p{margin:0;font-size:1.15rem}
 .celebrate .extra{display:grid;gap:6px;width:100%}
 .celebrate .extra div{background:var(--good-soft);border-radius:16px;padding:8px 12px;font:700 1rem var(--f)}
+.celebrate .extra div.gold{background:#FFF4D6}
 .okbtn{min-height:70px;width:100%;border:0;border-radius:24px;background:var(--good);color:#fff;font:700 1.4rem var(--f)}
 .confetti{position:absolute;top:-20px;width:12px;height:16px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:var(--water-2);animation:conf 1.8s ease-in forwards}
 @keyframes conf{to{transform:translateY(420px) rotate(160deg);opacity:0}}
 
-/* colección */
+/* colección y vestir a Pipa */
+.kpi{display:grid;justify-items:center;gap:2px;font:700 1rem var(--f);color:var(--muted);margin-top:-8px}
+.kpi b{color:var(--ink)}
+.dress{display:grid;justify-items:center;gap:10px;background:var(--bg);border-radius:22px;padding:14px 10px}
+.dress svg.p{width:120px;height:130px}
+.pots{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;width:100%}
+.pots button{border:0;background:none;padding:2px;display:grid;justify-items:center;gap:2px;font:700 .72rem/1.15 var(--f);color:var(--muted);border-radius:16px}
+.pots button svg{width:52px;height:46px}
+.pots button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 0 0 3px var(--water)}
+.pots button.lock svg{filter:grayscale(1);opacity:.3}
+.accs{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+.accs button{min-height:52px;border-radius:18px;border:2px solid var(--line);background:var(--surface);padding:4px 8px;font:700 .92rem/1.15 var(--f)}
+.accs button[aria-pressed="true"]{background:var(--water);border-color:var(--water);color:#fff}
+.accs button.lock{color:var(--muted);border-style:dashed;background:none}
+.accs button small{display:block;font:500 .78rem var(--f)}
+.next{background:#FFF4D6;border-radius:16px;padding:10px 14px;font:700 .95rem/1.4 var(--f);text-align:center}
 .gbar{height:14px;border-radius:99px;background:var(--good-soft);overflow:hidden}
 .gbar i{display:block;height:100%;background:var(--leaf);border-radius:99px}
 .vis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -172,15 +193,15 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--water-dark);out
 .danger{min-height:52px;border-radius:16px;border:2px solid var(--danger);background:none;color:var(--danger);font:700 1rem var(--f)}
 .danger.sure{background:var(--danger);color:#fff}
 .close{min-height:64px;border:0;border-radius:22px;background:var(--water);color:#fff;font:700 1.25rem var(--f)}
-@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}.garden .drift{opacity:.9}}
 @media (max-height:700px){.scene{height:150px}.pet,.pet svg.p{width:126px;height:138px}.pet{margin-left:-63px}.big{min-height:84px}.mid{min-height:68px}}
-@media (max-width:360px){.round{width:46px;height:46px}.top .date{font-size:1rem}}
+@media (max-width:360px){.round{width:46px;height:46px}.top .date{font-size:1rem}.pots{grid-template-columns:repeat(4,1fr)}}
 </style>
 
 <div class="app" id="app">
   <header class="top">
     <div class="date" id="date"></div>
-    <button class="round" id="collbtn" aria-label="Mi jardín y logros">
+    <button class="round" id="collbtn" aria-label="Mi jardín, Pipa y logros">
       <svg viewBox="0 0 24 24" fill="#FFF4D6" stroke="var(--star)" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8 6.6 19.7l1.1-6.1L3.2 9.4l6.1-.8z"/></svg>
       <span class="dot" id="colldot" hidden></span>
     </button>
@@ -238,6 +259,16 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--water-dark);out
 <div class="layer" id="coll" hidden>
   <div class="card" role="dialog" aria-modal="true" aria-labelledby="coll-t">
     <h2 id="coll-t">Mi jardín</h2>
+    <div class="kpi" id="coll-kpi"></div>
+    <div class="set">
+      <h3>Vestir a Pipa</h3>
+      <div class="dress">
+        <div id="dress-pet"></div>
+        <div class="pots" id="dress-pots" role="group" aria-label="Maceta"></div>
+        <div class="accs" id="dress-accs" role="group" aria-label="Complemento"></div>
+      </div>
+      <div class="next" id="coll-next"></div>
+    </div>
     <div class="set">
       <h3 id="coll-garden"></h3>
       <div class="gbar"><i id="coll-gbar"></i></div>
@@ -288,7 +319,7 @@ const iso=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
 const today=()=>iso(new Date());
 const addDays=(s,n)=>{const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+n);return iso(d)};
 const KEY="pipa-agua.v1";
-const DEF={goal:8,glass:250,name:"",sound:true};
+const DEF={goal:8,glass:250,name:"",sound:true,pot:"ai",acc:"ninguno"};
 
 /* ---------- datos (solo en este dispositivo) ---------- */
 let mem=null;
@@ -311,10 +342,73 @@ const goalOf=k=>{const d=load().days[k];return d&&d.goal?d.goal:S().goal};
 const reached=k=>total(k)>=goalOf(k)&&total(k)>0;
 function goodDays(){return Object.keys(load().days).filter(reached).length}
 
+/* ---------- macetas y complementos de Pipa ---------- */
+const POTS={
+  ai:{n:"Azul",c:"#5B6F96",c2:"#4A5D84",l:"#8FA0C2",at:0},
+  sakura:{n:"Rosa",c:"#D98A98",c2:"#C47483",l:"#F3C6CF",at:3},
+  matcha:{n:"Verde",c:"#6E8F4E",c2:"#5B7A3E",l:"#AFC795",at:7},
+  kohaku:{n:"Ámbar",c:"#D4A04A",c2:"#BC8A36",l:"#F0D396",at:12},
+  sora:{n:"Cielo",c:"#6FA8C9",c2:"#5A92B3",l:"#BFDDEE",at:14},
+  lavanda:{n:"Lavanda",c:"#9D8CC4",c2:"#8676B0",l:"#D3CAEA",at:42},
+  dorada:{n:"Dorada",c:"#D9B23A",c2:"#B8921F",l:"#F7E39A",at:60,star:true},
+  lunares:{n:"Lunares",c:"#5B6F96",c2:"#4A5D84",l:"#fff",at:77,pat:"dots"},
+  rayas:{n:"Rayas",c:"#D98A98",c2:"#C47483",l:"#fff",at:91,pat:"stripes"}
+};
+const ACCS={
+  ninguno:{n:"Nada",at:0},
+  cinta:{n:"Cinta",at:5},
+  gafas:{n:"Gafas de sol",at:10},
+  sombrero:{n:"Sombrero de paja",at:21},
+  flores:{n:"Corona de flores",at:30,star:true},
+  gorro:{n:"Gorro de lana",at:35},
+  pajarita:{n:"Pajarita",at:56},
+  cascos:{n:"Cascos de música",at:70},
+  bufanda:{n:"Bufanda",at:84},
+  corona:{n:"Corona dorada",at:100,star:true}
+};
+const SKY={
+  nube:{n:"una nube amiga",at:28},
+  cometa:{n:"una cometa",at:49},
+  arcoiris:{n:"un arcoíris",at:60,star:true}
+};
+// todos los premios en orden de días cumplidos
+const UNLOCKS=[
+  ...Object.entries(POTS).filter(([,p])=>p.at>0).map(([id,p])=>({kind:"pot",id,at:p.at,star:p.star,n:"la maceta "+p.n.toLowerCase()})),
+  ...Object.entries(ACCS).filter(([,a])=>a.at>0).map(([id,a])=>({kind:"acc",id,at:a.at,star:a.star,n:(["gafas","cascos"].includes(id)?"las ":"la ")+a.n.toLowerCase()})),
+  ...Object.entries(SKY).map(([id,s])=>({kind:"sky",id,at:s.at,star:s.star,n:s.n}))
+].sort((a,b)=>a.at-b.at);
+const unlocked=(item,gd=goodDays())=>gd>=item.at;
+function look(){const s=S();const gd=goodDays();return {pot:POTS[s.pot]&&unlocked(POTS[s.pot],gd)?s.pot:"ai",acc:ACCS[s.acc]&&unlocked(ACCS[s.acc],gd)?s.acc:"ninguno"}}
+
 /* ---------- Pipa ---------- */
 const STAGES=[{n:"semilla",a:"una",at:0},{n:"brote",a:"un",at:1},{n:"plantita",a:"una",at:3},{n:"planta",a:"una",at:7},{n:"planta en flor",a:"una",at:14}];
 function stageOf(n){let s=0;STAGES.forEach((x,i)=>{if(n>=x.at)s=i});return s}
-function petSVG(stage,mood){
+function headAcc(a){
+  switch(a){
+    case "cinta":return `<path d="M28.5 48 q21.5 -9 43 0 v6.5 q-21.5 -9 -43 0z" fill="#E58D9C"/><path d="M71 49 l7 -3 l-2 7z" fill="#E58D9C"/>`;
+    case "gafas":return `<rect x="34" y="51.5" width="14" height="9" rx="3.5" fill="#2B2D28"/><rect x="52" y="51.5" width="14" height="9" rx="3.5" fill="#2B2D28"/><path d="M48 55 h4 M34 54 l-6 -2 M66 54 l6 -2" stroke="#2B2D28" stroke-width="2" stroke-linecap="round"/><path d="M37 54 l3 -1.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity=".7"/>`;
+    case "sombrero":return `<path d="M17 45 Q50 51 83 45 Q78 40 64 40 Q62 28 50 27 Q38 28 36 40 Q22 40 17 45Z" fill="#E9CF95"/><path d="M36.5 39.5 Q50 43 63.5 39.5 L63 36 Q50 39 37 36Z" fill="#D98A98"/>`;
+    case "flores":return [[31,47,"#F0A3AE"],[37,41,"#F2C94C"],[44,37.5,"#fff"],[50,36.5,"#F0A3AE"],[56,37.5,"#F2C94C"],[63,41,"#fff"],[69,47,"#F0A3AE"]].map(([x,y,c])=>`<circle cx="${x}" cy="${y}" r="4.4" fill="${c}" stroke="#E9D9C0" stroke-width=".8"/><circle cx="${x}" cy="${y}" r="1.5" fill="${c==="#F2C94C"?"#fff":"#F2C94C"}"/>`).join("")+`<path d="M34 44 l-3 -1 M66 44 l3 -1" stroke="var(--leaf)" stroke-width="2" stroke-linecap="round"/>`;
+    case "gorro":return `<path d="M29 49 q0 -22 21 -22 q21 0 21 22z" fill="#46598A"/><path d="M36 33 v14 M43 29 v18 M50 28 v19 M57 29 v18 M64 33 v14" stroke="#5B6F9E" stroke-width="2"/><rect x="27" y="44" width="46" height="8" rx="4" fill="#E9EEF7"/><circle cx="50" cy="26" r="4.5" fill="#E9EEF7"/>`;
+    case "cascos":return `<path d="M27 58 v-4 a23 23 0 0 1 46 0 v4" fill="none" stroke="#2B2D28" stroke-width="3.5"/><rect x="23" y="53" width="9" height="15" rx="4" fill="#E58D9C"/><rect x="68" y="53" width="9" height="15" rx="4" fill="#E58D9C"/>`;
+    case "corona":return `<path d="M36 44 L37 31 L43.5 37.5 L50 27 L56.5 37.5 L63 31 L64 44Z" fill="#F2C230" stroke="#C99A1A" stroke-width="1.2" stroke-linejoin="round"/><circle cx="50" cy="39.5" r="2.4" fill="#E15B6B"/><circle cx="42" cy="41" r="1.6" fill="#5BA0E0"/><circle cx="58" cy="41" r="1.6" fill="#5BA0E0"/>`;
+    default:return "";
+  }
+}
+function potAcc(a){
+  if(a==="bufanda")return `<path d="M30 74 q20 8 40 0 v6.5 q-20 8 -40 0z" fill="#D9574B"/><path d="M34 77 v6 M40 78.5 v6 M46 79.5 v6 M54 79.5 v6 M60 78.5 v6 M66 77 v6" stroke="#E98378" stroke-width="1.6"/><path d="M60 80 l3 13 h7 l-4 -14z" fill="#D9574B"/>`;
+  if(a==="pajarita")return `<path d="M50 80 l-10 -5.5 v11z M50 80 l10 -5.5 v11z" fill="#D9574B"/><circle cx="50" cy="80" r="2.8" fill="#B8463C"/>`;
+  return "";
+}
+function potSVG(id){
+  const p=POTS[id]||POTS.ai;
+  let deco=`<path d="M33 93 q3.5 -4 7 0 q3.5 -4 7 0 q3.5 -4 7 0 q3.5 -4 7 0" stroke="${p.l}" stroke-width="1.4" fill="none" stroke-linecap="round"/>`;
+  if(p.pat==="dots")deco=[[35,89],[45,93],[55,89],[65,93],[40,99],[50,100],[60,99]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2" fill="#fff" opacity=".85"/>`).join("");
+  if(p.pat==="stripes")deco=`<path d="M29.5 89 h41 M31 95 h38 M32.5 101 h35" stroke="#fff" stroke-width="2.2" opacity=".85"/>`;
+  if(p.star)deco+=`<path d="M50 90 l1.6 3.3 3.6.5 -2.6 2.5.6 3.6 -3.2 -1.7 -3.2 1.7.6 -3.6 -2.6 -2.5 3.6 -.5z" fill="#fff" opacity=".9"/>`;
+  return `<rect x="25" y="76" width="50" height="8" rx="3" fill="${p.c2}"/><path d="M28 84 h44 l-5 21 h-34 z" fill="${p.c}"/>${deco}`;
+}
+function petSVG(stage,mood,lk=look()){
   const sad=mood==="thirsty",sleep=mood==="sleep";
   const leaf=(rot,s)=>`<g transform="translate(50 37) rotate(${rot+(sad||sleep?(rot<0?-26:rot>0?26:0):0)}) scale(${s})"><path class="lf" d="M0 0 C -9 -6 -9 -19 0 -26 C 9 -19 9 -6 0 0Z" fill="var(--leaf-2)"/></g>`;
   let top="";
@@ -325,17 +419,16 @@ function petSVG(stage,mood){
   const head=stage===0?"var(--seed)":"var(--leaf)";
   let eyes,mouth,extra="";
   const cheeks=o=>`<circle cx="35" cy="63" r="3.4" fill="var(--blush)" opacity="${o}"/><circle cx="65" cy="63" r="3.4" fill="var(--blush)" opacity="${o}"/>`;
-  if(sleep){eyes=`<path d="M38 57 q4 3.5 8 0 M54 57 q4 3.5 8 0" stroke="var(--face)" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;mouth=`<ellipse cx="50" cy="65.5" rx="2.4" ry="2" fill="var(--face)"/>`;extra=cheeks(.5)+`<g class="zz" fill="var(--water-dark)" font-family="Zen Maru Gothic, sans-serif" font-weight="700"><text x="70" y="40" font-size="10">z</text><text x="78" y="30" font-size="14">Z</text></g>`}
+  if(sleep){eyes=`<path d="M38 57 q4 3.5 8 0 M54 57 q4 3.5 8 0" stroke="var(--face)" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;mouth=`<ellipse cx="50" cy="65.5" rx="2.4" ry="2" fill="var(--face)"/>`;extra=cheeks(.5)+`<g class="zz" fill="var(--water-dark)" font-family="Zen Maru Gothic, sans-serif" font-weight="700"><text x="74" y="40" font-size="10">z</text><text x="82" y="30" font-size="14">Z</text></g>`}
   else if(sad){eyes=`<g class="eyes"><circle cx="42" cy="57" r="2.4" fill="var(--face)"/><circle cx="58" cy="57" r="2.4" fill="var(--face)"/></g>`;mouth=`<path d="M45 68 q5 -4 10 0" stroke="var(--face)" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;extra=`<path d="M64 56 q-2 4 0 6 q2 -2 0 -6z" fill="var(--water-2)"/>`}
   else if(mood==="ok"){eyes=`<g class="eyes"><circle cx="42" cy="56" r="2.6" fill="var(--face)"/><circle cx="58" cy="56" r="2.6" fill="var(--face)"/></g>`;mouth=`<path d="M44 64 q6 5 12 0" stroke="var(--face)" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;extra=cheeks(.55)}
   else{eyes=`<path d="M38 57 q4 -4.5 8 0 M54 57 q4 -4.5 8 0" stroke="var(--face)" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;mouth=`<path d="M42.5 63 q7.5 9 15 0 z" fill="var(--face)"/>`;extra=cheeks(.7);
     if(mood==="radiant")extra+=[[14,40],[86,34],[10,66],[90,62]].map(([x,y])=>`<path class="spark" d="M${x} ${y-5} L${x+1.4} ${y-1.4} L${x+5} ${y} L${x+1.4} ${y+1.4} L${x} ${y+5} L${x-1.4} ${y+1.4} L${x-5} ${y} L${x-1.4} ${y-1.4} Z" fill="var(--sun)"/>`).join("")}
+  if(lk.acc==="gafas")eyes="";
   const tilt=sad?`transform="rotate(-6 50 80)"`:sleep?`transform="rotate(5 50 80)"`:"";
   return `<svg class="p" viewBox="0 0 100 108" role="img" aria-label="Pipa, ${STAGES[stage].n}">
-    <g ${tilt}>${top}<circle cx="50" cy="58" r="22" fill="${head}"/>${eyes}${mouth}</g>${extra}
-    <rect x="25" y="76" width="50" height="8" rx="3" fill="var(--pot-2)"/>
-    <path d="M28 84 h44 l-5 21 h-34 z" fill="var(--pot)"/>
-    <path d="M33 93 q3.5 -4 7 0 q3.5 -4 7 0 q3.5 -4 7 0 q3.5 -4 7 0" stroke="var(--pot-line)" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>`;
+    <g ${tilt}>${top}<circle cx="50" cy="58" r="22" fill="${head}"/>${eyes}${mouth}${headAcc(lk.acc)}</g>${extra}
+    ${potSVG(lk.pot)}${potAcc(lk.acc)}</svg>`;
 }
 
 /* ---------- jardín: una cosa nueva por cada día con el objetivo cumplido ---------- */
@@ -353,11 +446,33 @@ const ITEMS=[
   {n:"una regadera",d:`<path d="M-10 0 V-15 H7 V0Z" fill="#6FA8C9"/><path d="M7 -11 L18 -20 L20 -17 L8 -6Z" fill="#6FA8C9"/><path d="M-10 -12 Q-17 -12 -15 -4" stroke="#4F86A8" stroke-width="2.6" fill="none"/><path d="M-6 -15 Q-1 -23 4 -15" stroke="#4F86A8" stroke-width="2.6" fill="none"/>`},
   {n:"una valla de madera",d:`${[-12,-2,8].map(x=>`<path d="M${x} 0 V-17 l2.5 -3 l2.5 3 V0Z" fill="${WOOD}"/>`).join("")}<rect x="-15" y="-14" width="28" height="3" rx="1" fill="#8A6545"/><rect x="-15" y="-6" width="28" height="3" rx="1" fill="#8A6545"/>`},
   {n:"un molinillo de colores",d:`<path d="M0 0 V-28" stroke="${WOOD}" stroke-width="2.4"/><g class="spin"><path d="M0 -30 L0 -42 L8 -36Z" fill="#E58D9C"/><path d="M0 -30 L12 -30 L6 -22Z" fill="var(--sun)"/><path d="M0 -30 L0 -18 L-8 -24Z" fill="var(--water-2)"/><path d="M0 -30 L-12 -30 L-6 -38Z" fill="var(--leaf-2)"/><circle cx="0" cy="-30" r="1.8" fill="#fff"/></g>`},
-  {n:"una casita para pájaros",d:`<rect x="-1.8" y="-34" width="3.6" height="34" fill="${WOOD}"/><path d="M-10 -32 V-46 L0 -54 L10 -46 V-32Z" fill="#E7A9B4"/><path d="M-13 -45 L0 -56 L13 -45" stroke="var(--pot-2)" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="0" cy="-41" r="3.2" fill="#5A4433"/>`},
+  {n:"una casita para pájaros",d:`<rect x="-1.8" y="-34" width="3.6" height="34" fill="${WOOD}"/><path d="M-10 -32 V-46 L0 -54 L10 -46 V-32Z" fill="#E7A9B4"/><path d="M-13 -45 L0 -56 L13 -45" stroke="#4A5D84" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="0" cy="-41" r="3.2" fill="#5A4433"/>`},
   {n:"un cerezo",d:`<path d="M-1 0 Q0 -14 -3 -26 M0 -14 Q5 -20 8 -26" stroke="${WOOD}" stroke-width="3.4" fill="none" stroke-linecap="round"/>${[[-10,-30,9],[2,-36,10],[12,-29,8],[-3,-24,7],[8,-21,6]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#F6C9D2"/>`).join("")}${[[-12,-32],[3,-40],[13,-31],[-2,-27],[6,-34]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.6" fill="#E58D9C"/>`).join("")}`}
 ];
 // huecos alrededor de la maceta: [x, y, escala]; primero los de delante y cerca
 const SLOTS=[[122,168,1.35],[238,168,1.35],[84,168,1.35],[276,168,1.35],[104,150,1.05],[256,150,1.05],[46,168,1.35],[314,168,1.35],[66,150,1.05],[294,150,1.05],[12,168,1.35],[348,168,1.35],[30,150,1.05],[330,150,1.05]];
+
+/* ---------- estaciones: el jardín cambia solo con el mes ---------- */
+let seasonOverride=null;
+function season(){if(seasonOverride)return seasonOverride;const m=new Date().getMonth();return m>=2&&m<=4?"primavera":m>=5&&m<=7?"verano":m>=8&&m<=10?"otoño":"invierno"}
+const SEASON_INFO={primavera:{e:"🌸",t:"Es primavera en el jardín"},verano:{e:"☀️",t:"Es verano en el jardín"},otoño:{e:"🍂",t:"Es otoño en el jardín"},invierno:{e:"❄️",t:"Es invierno en el jardín"}};
+function seasonLayer(){
+  const s=season();const rnd=i=>((hashStr(s+i)%1000)/1000);
+  const parts=(n,draw)=>Array.from({length:n},(_,i)=>{const x=(i+.5)*(360/n)+(rnd(i)-.5)*24,y=10+rnd(i+50)*110,dur=7+rnd(i+9)*5,del=-rnd(i+20)*12;return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><g class="drift" style="animation-duration:${dur.toFixed(1)}s;animation-delay:${del.toFixed(1)}s">${draw(i)}</g></g>`}).join("");
+  let back="",ground="var(--good-soft)",front="";
+  if(s==="primavera")front=parts(7,i=>`<ellipse cx="0" cy="0" rx="4.6" ry="3" fill="${i%2?"#F3B6C2":"#F6C9D2"}"/>`);
+  if(s==="verano"){ground="#E6F0CC";back=`<g transform="translate(24 24)"><g class="spin-slow">${[0,45,90,135,180,225,270,315].map(a=>`<path d="M0 -17 V-13" stroke="#F2C94C" stroke-width="2.6" stroke-linecap="round" transform="rotate(${a})"/>`).join("")}</g><circle r="10" fill="#F2C94C"/></g>`}
+  if(s==="otoño"){ground="#F2E8D2";front=parts(6,i=>`<path d="M0 -7 Q7 -4 5.5 4 Q0 8 -5.5 4 Q-7 -4 0 -7Z" fill="${["#E39B3E","#C9703A","#E8C14A"][i%3]}"/>`)+[[150,171,"#E39B3E"],[214,172,"#C9703A"],[178,174,"#E8C14A"],[64,172,"#C9703A"],[300,173,"#E39B3E"]].map(([x,y,c])=>`<path d="M${x} ${y-3} q4 -1 4 2 q-3 3 -6 1 q-1 -3 2 -3z" fill="${c}"/>`).join("")}
+  if(s==="invierno"){ground="#F6FAFC";front=parts(11,i=>`<circle r="${i%3?3:4}" fill="#fff" stroke="#BCD3DF" stroke-width="1.2"/>`)}
+  return {back,ground,front,s};
+}
+function skyLayer(gd){
+  let g="";
+  if(gd>=SKY.arcoiris.at)g+=["#F0A3AE","#F2C94C","#9DBE7A","#7CC3EE","#C9A0DC"].map((c,i)=>{const r=150-i*8;return `<path d="M${180-r} 160 A${r} ${r} 0 0 1 ${180+r} 160" fill="none" stroke="${c}" stroke-width="8" opacity=".38"/>`}).join("");
+  if(gd>=SKY.nube.at)g+=`<g transform="translate(298 30)"><g class="bob"><path d="M-24 10 a10 10 0 0 1 3 -19 a13 13 0 0 1 25 -5 a11 11 0 0 1 17 10 a9 9 0 0 1 -1 14z" fill="#fff" stroke="#CFE0E8" stroke-width="2"/><circle cx="-6" cy="1" r="1.7" fill="#2F302C"/><circle cx="6" cy="1" r="1.7" fill="#2F302C"/><path d="M-3 5 q3 3 6 0" stroke="#2F302C" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="-11" cy="5" r="2.4" fill="#F0A3AE" opacity=".6"/><circle cx="11" cy="5" r="2.4" fill="#F0A3AE" opacity=".6"/></g></g>`;
+  if(gd>=SKY.cometa.at)g+=`<g transform="translate(58 16)"><g class="kite"><path d="M0 0 L11 15 L0 34 L-11 15Z" fill="#E58D9C"/><path d="M0 0 V34 M-11 15 H11" stroke="#fff" stroke-width="1.3"/><path d="M0 34 q-7 10 2 18 q8 8 0 18" stroke="${WOOD}" fill="none" stroke-width="1.3"/><path d="M-3 44 l3 2 l3 -2 l-3 -2z M-1 58 l3 2 l3 -2 l-3 -2z" fill="#7CC3EE"/></g></g>`;
+  return g;
+}
 
 /* ---------- visitas sorpresa ---------- */
 const VISITORS=[
@@ -373,13 +488,14 @@ function visitorFor(k){const h=hashStr("pipa-visita-"+k);return h%100<40?(h>>>8)
 const seenVisitors=()=>{const c={};Object.values(load().visits).forEach(v=>{c[v]=(c[v]||0)+1});return c};
 
 function gardenSVG(opts={}){
-  const n=Math.min(goodDays(),ITEMS.length);
-  let g=`<path d="M-40 176 V156 Q60 140 180 150 T400 152 V176Z" fill="var(--good-soft)"/>`;
+  const gd=goodDays(),n=Math.min(gd,ITEMS.length),se=seasonLayer();
+  let g=se.back+skyLayer(gd);
+  g+=`<path d="M-40 176 V156 Q60 140 180 150 T400 152 V176Z" fill="${se.ground}"${se.s==="invierno"?` stroke="#D6E3EA" stroke-width="2"`:""}/>`;
   const order=[...Array(n).keys()].sort((a,b)=>SLOTS[a][1]-SLOTS[b][1]);
   for(const i of order){const [x,y,s]=SLOTS[i];g+=`<g transform="translate(${x} ${y}) scale(${s})"><g class="${opts.popIndex===i?"pop":""}">${ITEMS[i].d}</g></g>`}
   const v=load().visits[today()];
-  if(v!=null){const right=hashStr("lado"+today())%2===0;g+=`<g transform="translate(${right?300:62} 56) scale(1.25)"><g class="${opts.arrive?"arrive":""}"><g class="bob">${VISITORS[v].d}</g></g></g>`}
-  return g;
+  if(v!=null){const right=hashStr("lado"+today())%2===0;g+=`<g transform="translate(${right?300:62} 72) scale(1.25)"><g class="${opts.arrive?"arrive":""}"><g class="bob">${VISITORS[v].d}</g></g></g>`}
+  return g+se.front;
 }
 
 /* ---------- logros (una vez conseguidos, no se pierden) ---------- */
@@ -397,7 +513,9 @@ const BADGES=[
   {id:"semana",e:"📅",n:"Gran semana",d:"Cumple el objetivo 5 días de una misma semana.",t:()=>bestWeek()>=5},
   {id:"flor",e:"🌸",n:"Jardín en flor",d:"Cumple el objetivo 14 días.",t:()=>goodDays()>=14},
   {id:"coleccion",e:"🦋",n:"Todas las visitas",d:"Recibe la visita de los 6 animalitos.",t:()=>Object.keys(seenVisitors()).length>=VISITORS.length},
-  {id:"mes",e:"🏆",n:"Un mes",d:"Cumple el objetivo 30 días.",t:()=>goodDays()>=30}
+  {id:"mes",e:"🏆",n:"Un mes",d:"Cumple el objetivo 30 días.",t:()=>goodDays()>=30},
+  {id:"dosmeses",e:"🌈",n:"Dos meses",d:"Cumple el objetivo 60 días.",t:()=>goodDays()>=60},
+  {id:"cien",e:"👑",n:"Cien días",d:"Cumple el objetivo 100 días.",t:()=>goodDays()>=100}
 ];
 function checkBadges(){
   const B=load().badges,got=[];
@@ -423,6 +541,7 @@ const SND={
   drink(){const c=ac();if(!c)return;const t=c.currentTime+.01;note(c,t,480,260,.13);note(c,t+.14,560,300,.13);note(c,t+.28,660,340,.16)},
   goal(){const c=ac();if(!c)return;const t=c.currentTime+.01;[523,659,784,1047].forEach((f,i)=>note(c,t+i*.13,f,0,.32,"triangle",.24));[523,659,784].forEach(f=>note(c,t+.6,f,0,.8,"sine",.12))},
   grow(){const c=ac();if(!c)return;const t=c.currentTime+.01;note(c,t,300,900,.45,"sine",.18);[1175,1397,1568,1760].forEach((f,i)=>note(c,t+.45+i*.09,f,0,.25,"triangle",.14))},
+  prize(){const c=ac();if(!c)return;const t=c.currentTime+.01;[523,659,784,1047,784,1047,1319].forEach((f,i)=>note(c,t+i*.12,f,0,.35,"triangle",.2));[523,784,1047,1319].forEach(f=>note(c,t+.95,f,0,1.1,"sine",.1))},
   visit(){const c=ac();if(!c)return;const t=c.currentTime+.01;[0,.16,.32].forEach((d,i)=>{note(c,t+d,1800+i*150,2600+i*150,.08,"sine",.12);note(c,t+d+.07,2400,1900,.07,"sine",.1)})},
   badge(){const c=ac();if(!c)return;const t=c.currentTime+.01;[880,1109,1319,1760].forEach((f,i)=>note(c,t+i*.08,f,0,.4,"triangle",.13))},
   giggle(){const c=ac();if(!c)return;const t=c.currentTime+.01;[0,.11,.22].forEach((d,i)=>note(c,t+d,760-i*40,980-i*40,.09,"sine",.13))},
@@ -446,6 +565,12 @@ const GREET=[
   ()=>`¡Por fin viernes${hi()}! ¿Lo celebramos con agua?`,
   ()=>`¡Feliz sábado${hi()}! Un vaso de agua y a disfrutar.`
 ];
+const SEASON_LINES={
+  primavera:[()=>"¡Huele a primavera! Todo florece.",()=>"Con la primavera me entran ganas de crecer."],
+  verano:[()=>"¡Qué calor! Con el agua me quedo fresquita.",()=>"En verano hay que beber más, ¿eh?"],
+  otoño:[()=>"¡Mira cómo caen las hojas!",()=>"En otoño me gusta ver las hojas bailar."],
+  invierno:[()=>"¡Brrr, qué frío! ¿Un vasito de agua?",()=>"¿Has visto la nieve en el jardín?"]
+};
 const CHEERS=[()=>`¡Glu, glu! Qué rico${hi()}.`,()=>"¡Gracias! Me encanta el agua.",()=>"¡Así me gusta!",()=>`¡Muy bien${hi()}!`,()=>"¡Mira cómo bailo!",()=>"¡Qué fresquita!",()=>"¡Mis raíces están de fiesta!",()=>"¡Ole, ole y ole!",()=>"Gota a gota se llena el vaso.",()=>"¡Me siento más verde que nunca!"];
 const TAPS=[
   ()=>"¡Jijiji, me haces cosquillas!",
@@ -459,7 +584,8 @@ const TAPS=[
   ()=>"¿Bailamos? ¡Un, dos, tres!",
   ()=>"Mis hojas te mandan un abrazo.",
   ()=>"¿Sabes cuál es mi bebida favorita? ¡Adivina!",
-  ()=>"Con un poco de agua, todo se ve mejor."
+  ()=>"Con un poco de agua, todo se ve mejor.",
+  ()=>look().acc!=="ninguno"?"¿Te gusta cómo me queda? ¡Voy guapísima!":"Algún día me pondré algo bonito… ¡ya verás!"
 ];
 let awakeUntil=0;
 function moodNow(n,g){
@@ -471,17 +597,27 @@ let msgKey="",msgText="";
 function defaultMsg(n,g){
   const h=new Date().getHours(),mood=moodNow(n,g);
   const last=day().log.slice(-1)[0],idle=last&&Date.now()-last.t>2*3600e3&&h<22;
-  const key=[today(),n,g,mood,idle?1:0].join("|");
+  const key=[today(),n,g,mood,idle?1:0,season()].join("|");
   if(key===msgKey)return msgText;
   let t;const left=g-n;
   if(mood==="sleep")t=h>=22?`Zzz… Buenas noches${hi()}. Mañana más.`:"Zzz… Pipa está dormida. ¿La despiertas con un vaso de agua?";
-  else if(n<=0)t=h<14?GREET[new Date().getDay()]():pick([`Tengo sed${hi()}… ¿bebemos un vaso de agua?`,"¡Hola! Hoy aún no hemos bebido nada. ¿Empezamos?",`Uf, qué sed${hi()}. ¿Me das agüita?`]);
+  else if(n<=0)t=h<14?(Math.random()<.3?pick(SEASON_LINES[season()])():GREET[new Date().getDay()]()):pick([`Tengo sed${hi()}… ¿bebemos un vaso de agua?`,"¡Hola! Hoy aún no hemos bebido nada. ¿Empezamos?",`Uf, qué sed${hi()}. ¿Me das agüita?`]);
   else if(left<=0)t=pick([`¡Objetivo cumplido${hi()}! Estoy muy feliz.`,"¡Lo has conseguido! Soy la planta más feliz del mundo.","¡Qué gusto da estar tan bien regada!"]);
   else if(idle)t=pick([`Hace rato que no bebemos. ¿Un vasito${hi()}?`,"Me estoy quedando seca… ¿un traguito?","¿Te acuerdas de mí? ¡Tengo sed!"]);
   else if(left<=1)t=`¡Solo te queda ${left<1?"medio vaso":"un vaso"}!`;
   else if(n>=g/2)t=pick([`¡Ya vamos por la mitad! Te quedan ${fmtC(left)} vasos.`,`¡Más de la mitad! Faltan ${fmtC(left)} vasos.`]);
   else t=pick([`¡Muy bien! Te quedan ${fmtC(left)} vasos.`,`¡Vamos bien! Faltan ${fmtC(left)} vasos.`]);
   msgKey=key;msgText=t;return t;
+}
+const listY=a=>a.length<=1?(a[0]||""):a.slice(0,-1).join(", ")+" y "+a[a.length-1];
+function rewardsAt(d){const r=[];if(d>=1&&d<=ITEMS.length)r.push(ITEMS[d-1].n+" en el jardín");UNLOCKS.filter(u=>u.at===d).forEach(u=>r.push(u.kind==="sky"?u.n+" en el cielo":u.n+" para Pipa"));return r}
+function nextUnlock(gd){return UNLOCKS.find(u=>u.at>gd)||null}
+function hintText(gd,doneToday){
+  if(!doneToday){const r=rewardsAt(gd+1);if(r.length)return `Si cumples hoy: <b>${listY(r)}</b>.`}
+  const u=nextUnlock(gd+(doneToday?0:1));
+  if(!u)return gd>=100?"¡Pipa ya lo tiene todo! Eres la mejor jardinera.":"";
+  const left=u.at-gd;
+  return `${left===1?"En el próximo día cumplido":`Dentro de ${left} días cumplidos`}: <b>${u.n}</b>${u.kind==="sky"?" en el cielo":" para Pipa"}${u.star?" ⭐":""}.`;
 }
 
 /* ---------- pantalla ---------- */
@@ -503,8 +639,8 @@ function render(msg,gopts){
   $("garden").innerHTML=gardenSVG(gopts||{});
   $("msg").textContent=msg||defaultMsg(n,g);
   const next=STAGES[st+1];
-  let grow=next?`Pipa es ${STAGES[st].a} <b>${STAGES[st].n}</b>. ${next.at-gd===1?"Un día más":`${next.at-gd} días más`} cumpliendo el objetivo y crecerá.`:`Pipa ha <b>florecido</b>. ¡Sigue cuidándola!`;
-  if(gd<ITEMS.length)grow+=reached(k)?`<br>Mañana puede aparecer algo nuevo en el jardín.`:`<br>Si cumples hoy, aparecerá <b>${ITEMS[gd].n}</b> en el jardín.`;
+  let grow=next?`Pipa es ${STAGES[st].a} <b>${STAGES[st].n}</b>. ${next.at-gd===1?"Un día más":`${next.at-gd} días más`} cumpliendo el objetivo y crecerá.`:`Pipa ha <b>florecido</b>. Lleva <b>${gd}</b> días cumplidos.`;
+  const h=hintText(gd,reached(k));if(h)grow+="<br>"+h;
   $("grow").innerHTML=grow;
   const c=$("count");c.classList.toggle("done",n>=g);
   c.innerHTML=`<b>${fmtC(n)}</b><span>de ${g} vasos</span><small>${ml(n)} de ${ml(g)}</small>`;
@@ -534,6 +670,11 @@ function add(v){
   // visita sorpresa: se descubre con el primer vaso del día
   let visitor=null;
   if(before<=0&&load().visits[k]==null){const vi=visitorFor(k);if(vi!=null){load().visits[k]=vi;visitor=VISITORS[vi]}}
+  // premios nuevos: se le ponen a Pipa al momento (se pueden cambiar en ⭐)
+  const gdAfter=goodDays();
+  const prizes=UNLOCKS.filter(u=>u.at>gdBefore&&u.at<=gdAfter);
+  prizes.forEach(u=>{if(u.kind==="pot")S().pot=u.id;if(u.kind==="acc")S().acc=u.id});
+  if(prizes.length)load().unseen=true;
   store();
   const after=total(k);
   SND.drink();buzz(30);
@@ -541,10 +682,9 @@ function add(v){
   animate(Math.random()<.5?"jump":"dance");
   const badges=checkBadges();
   if(before<g&&after>=g){
-    const gdAfter=goodDays();
     render(null,{popIndex:gdAfter<=ITEMS.length?gdAfter-1:null,arrive:!!visitor});
     const stAfter=stageOf(gdAfter);
-    setTimeout(()=>celebrate(stAfter>stBefore,stAfter,gdAfter<=ITEMS.length?ITEMS[gdAfter-1]:null,badges,visitor),650);
+    setTimeout(()=>celebrate({grew:stAfter>stBefore,st:stAfter,item:gdAfter<=ITEMS.length?ITEMS[gdAfter-1]:null,badges,visitor,prizes}),650);
     return;
   }
   let m;
@@ -568,31 +708,33 @@ function tapPet(){
   awakeUntil=Date.now()+3*60e3;
   let m;
   if(asleep)m=new Date().getHours()>=22?"¡Uy! Ya estaba soñando… Buenas noches.":"¡Ay! Me has despertado. ¿Bebemos un vaso de agua?";
-  else{const f=pick(TAPS,lastTap);lastTap=f;m=f()}
+  else{const pool=[...TAPS,...SEASON_LINES[season()]];const f=pick(pool,lastTap);lastTap=f;m=f()}
   store();
   const badges=checkBadges();
   SND.giggle();buzz(20);animate(Math.random()<.5?"wiggle":"dance");
   render(m);
   if(badges.length)setTimeout(()=>{SND.badge();toast("⭐ Nuevo logro: "+badges.map(b=>b.n).join(", "),3200)},600);
 }
-function celebrate(grew,st,item,badges,visitor){
+function celebrate({grew,st,item,badges,visitor,prizes}){
   const n=load().settings.name;
+  const big=prizes.some(p=>p.star);
   $("cel-pet").innerHTML=petSVG(st,"radiant");
-  $("cel-t").textContent=grew?"¡Pipa ha crecido!":"¡Objetivo cumplido!";
-  $("cel-p").textContent=grew?`Ahora es ${STAGES[st].a} ${STAGES[st].n}. ¡Gracias por cuidarla${n?", "+n:""}!`:`Hoy has bebido toda el agua${n?", "+n:""}. Pipa está muy feliz.`;
+  $("cel-t").textContent=big?"¡Gran premio!":grew?"¡Pipa ha crecido!":"¡Objetivo cumplido!";
+  $("cel-p").textContent=big?`¡${goodDays()} días cumpliendo el objetivo${n?", "+n:""}! Pipa está orgullosísima.`:grew?`Ahora es ${STAGES[st].a} ${STAGES[st].n}. ¡Gracias por cuidarla${n?", "+n:""}!`:`Hoy has bebido toda el agua${n?", "+n:""}. Pipa está muy feliz.`;
   const x=[];
-  if(item)x.push(`🌼 En el jardín ha aparecido ${item.n}.`);
-  if(visitor)x.push(`✨ Además, hoy ha venido ${visitor.n} de visita.`);
-  badges.forEach(b=>x.push(`⭐ Nuevo logro: ${b.n}`));
-  $("cel-x").innerHTML=x.map(t=>`<div>${t}</div>`).join("");
+  if(item)x.push([`🌼 En el jardín ${/^unas? /.test(item.n)&&item.n.startsWith("unas ")?"han aparecido":"ha aparecido"} ${item.n}.`]);
+  prizes.forEach(p=>x.push([p.kind==="sky"?`☁️ En el cielo del jardín: ${p.n}.`:`🎁 Regalo para Pipa: ${p.n}. ¡Ya lo lleva puesto!`,p.star]));
+  if(visitor)x.push([`✨ Además, hoy ha venido ${visitor.n} de visita.`]);
+  badges.forEach(b=>x.push([`⭐ Nuevo logro: ${b.n}`]));
+  $("cel-x").innerHTML=x.map(([t,gold])=>`<div class="${gold?"gold":""}">${t}</div>`).join("");
   $("cel").hidden=false;
-  if(grew)SND.grow();else SND.goal();
-  if(badges.length)setTimeout(()=>SND.badge(),1100);
-  buzz([40,60,40]);
+  if(big)SND.prize();else if(grew)SND.grow();else SND.goal();
+  if(badges.length)setTimeout(()=>SND.badge(),big?1900:1100);
+  buzz(big?[60,60,60,60,120]:[40,60,40]);
   if(!matchMedia("(prefers-reduced-motion: reduce)").matches){
     const card=$("cel").querySelector(".card");
     card.querySelectorAll(".confetti").forEach(e=>e.remove());
-    for(let i=0;i<16;i++){const c=document.createElement("i");c.className="confetti";c.style.left=(5+Math.random()*90)+"%";c.style.animationDelay=(Math.random()*.6)+"s";if(i%3===0)c.style.background="var(--leaf-2)";if(i%4===0)c.style.background="var(--sun)";card.appendChild(c)}
+    for(let i=0;i<(big?34:16);i++){const c=document.createElement("i");c.className="confetti";c.style.left=(5+Math.random()*90)+"%";c.style.animationDelay=(Math.random()*(big?1.2:.6))+"s";if(i%3===0)c.style.background="var(--leaf-2)";if(i%4===0)c.style.background="var(--sun)";if(big&&i%5===0)c.style.background="#F0A3AE";card.appendChild(c)}
   }
   $("cel-ok").focus({preventScroll:true});
 }
@@ -604,12 +746,22 @@ $("undo").addEventListener("click",undo);
 $("pet").addEventListener("click",tapPet);
 $("soundbtn").addEventListener("click",()=>{S().sound=!S().sound;store();render();if(S().sound)SND.tap();toast(S().sound?"Sonido activado":"Sonido desactivado")});
 
-/* ---------- colección: jardín, visitas y logros ---------- */
+/* ---------- colección: vestir a Pipa, jardín, visitas y logros ---------- */
+function renderDress(){
+  const gd=goodDays(),lk=look();
+  $("dress-pet").innerHTML=petSVG(Math.max(1,stageOf(gd)),"happy",lk);
+  $("dress-pots").innerHTML=Object.entries(POTS).map(([id,p])=>{const ok=unlocked(p,gd);return `<button data-pot="${id}" class="${ok?"":"lock"}" aria-pressed="${lk.pot===id}" aria-label="Maceta ${p.n}${ok?"":", se consigue a los "+p.at+" días"}"><svg viewBox="22 74 56 34" aria-hidden="true">${potSVG(id)}</svg>${ok?p.n:"🔒 "+p.at+" días"}</button>`}).join("");
+  $("dress-accs").innerHTML=Object.entries(ACCS).map(([id,a])=>{const ok=unlocked(a,gd);return `<button data-acc="${id}" class="${ok?"":"lock"}" aria-pressed="${lk.acc===id}">${ok?a.n:`${a.n}<small>🔒 a los ${a.at} días</small>`}</button>`}).join("");
+}
 function renderColl(){
-  const gd=goodDays(),n=Math.min(gd,ITEMS.length);
+  const gd=goodDays(),n=Math.min(gd,ITEMS.length),se=SEASON_INFO[season()];
+  $("coll-kpi").innerHTML=`<span>Días cumplidos: <b>${gd}</b></span><span>${se.e} ${se.t}</span>`;
+  renderDress();
+  const u=nextUnlock(gd);
+  $("coll-next").innerHTML=u?`🎁 Próximo premio a los <b>${u.at} días</b>: ${u.n}${u.kind==="sky"?" en el cielo":""}${u.star?" ⭐":""}`:"🎉 ¡Pipa ya tiene todos los premios!";
   $("coll-garden").textContent=`Jardín: ${n} de ${ITEMS.length} cosas`;
   $("coll-gbar").style.width=(n/ITEMS.length*100)+"%";
-  $("coll-gnext").innerHTML=n<ITEMS.length?`La próxima vez que cumplas el objetivo aparecerá <b>${ITEMS[n].n}</b>.`:"¡El jardín está completo! Pipa está orgullosa.";
+  $("coll-gnext").innerHTML=n<ITEMS.length?`La próxima vez que cumplas el objetivo ${ITEMS[n].n.startsWith("unas ")?"aparecerán":"aparecerá"} <b>${ITEMS[n].n}</b>.`:"¡El jardín está completo! Ahora cambia con las estaciones y aún quedan premios en el cielo.";
   const seen=seenVisitors();
   $("coll-vis").innerHTML=VISITORS.map((v,i)=>{const c=seen[i]||0;return `<div class="${c?"":"no"}"><svg viewBox="-17 -15 34 30" aria-hidden="true">${v.d}</svg>${c?cap(v.s):"?"}<small>${c?(c===1?"1 visita":c+" visitas"):"aún no"}</small></div>`}).join("");
   const B=load().badges,got=BADGES.filter(b=>B[b.id]).length;
@@ -618,6 +770,13 @@ function renderColl(){
 }
 $("collbtn").addEventListener("click",()=>{renderColl();load().unseen=false;store();$("coll").hidden=false;SND.tap();$("coll-close").focus({preventScroll:true});$("coll").querySelector(".card").scrollTop=0;render()});
 $("coll-close").addEventListener("click",()=>{$("coll").hidden=true;render()});
+$("coll").addEventListener("click",e=>{
+  const b=e.target.closest("[data-pot],[data-acc]");if(!b)return;
+  const gd=goodDays();
+  if(b.dataset.pot){const p=POTS[b.dataset.pot];if(!unlocked(p,gd)){toast(`Se consigue al cumplir el objetivo ${p.at} días`);return}S().pot=b.dataset.pot}
+  else{const a=ACCS[b.dataset.acc];if(!unlocked(a,gd)){toast(`Se consigue al cumplir el objetivo ${a.at} días`);return}S().acc=b.dataset.acc}
+  store();SND.giggle();renderDress();render();
+});
 
 /* ---------- ajustes ---------- */
 const SIZES=[150,200,250,300];
@@ -639,7 +798,7 @@ $("g-sound").addEventListener("click",()=>{S().sound=!S().sound;store();renderSe
 $("g-reset").addEventListener("click",()=>{
   const b=$("g-reset");
   if(!b.classList.contains("sure")){b.classList.add("sure");b.textContent="Toca otra vez para borrarlo todo";setTimeout(()=>{b.classList.remove("sure");b.textContent="Borrar todo el historial"},4000);return}
-  const m=load();m.days={};m.visits={};m.badges={};m.taps=0;m.unseen=false;store();b.classList.remove("sure");b.textContent="Borrar todo el historial";renderSet();render();toast("Historial borrado");
+  const m=load();m.days={};m.visits={};m.badges={};m.taps=0;m.unseen=false;m.settings.pot="ai";m.settings.acc="ninguno";store();b.classList.remove("sure");b.textContent="Borrar todo el historial";renderSet();render();toast("Historial borrado");
 });
 document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;["settings","coll","cel"].forEach(id=>{if(!$(id).hidden){$(id).hidden=true;render()}})});
 
@@ -652,12 +811,13 @@ setInterval(()=>{if(!document.hidden)refresh()},60000);
 /* app instalable: solo cuando se sirve como app propia */
 try{if(document.querySelector('meta[name="pipa-pwa"]')&&"serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{})}catch(e){}
 
-// quien ya usaba la app recibe sus logros sin avisos de golpe
+// quien ya usaba la app: sus logros y premios ganados aparecen sin avisos de golpe
 if(!load().badgesInit){load().badgesInit=true;store()}
+if(!load().prizesInit){load().prizesInit=true;if(UNLOCKS.some(u=>unlocked(u)))load().unseen=true;store()}
 checkBadges();
 render();
-window.__pipa={add,undo,total,today,load,stageOf,goodDays,tapPet,checkBadges,visitorFor,ITEMS,VISITORS,render,
-  _awake(ms){awakeUntil=Date.now()+ms}};
+window.__pipa={add,undo,total,today,load,stageOf,goodDays,tapPet,checkBadges,visitorFor,ITEMS,VISITORS,UNLOCKS,render,renderColl,
+  _awake(ms){awakeUntil=Date.now()+ms},_season(s){seasonOverride=s;msgKey=""}};
 })();
 </script>
 
