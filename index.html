@@ -149,12 +149,19 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--water-dark);out
 .pots button{border:0;background:none;padding:2px;display:grid;justify-items:center;gap:2px;font:700 .72rem/1.15 var(--f);color:var(--muted);border-radius:16px}
 .pots button svg{width:52px;height:46px}
 .pots button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 0 0 3px var(--water)}
-.pots button.lock svg{filter:grayscale(1);opacity:.3}
+.pots button.lock svg{opacity:.55}
+.mystery{display:grid;justify-items:center;gap:8px;width:100%}
+.dots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.dots i{width:18px;height:18px;border-radius:50%;border:2.5px solid var(--star);background:none}
+.dots i.on{background:var(--star)}
+.dots i.gift{border:0;width:auto;height:auto;font-style:normal;font-size:1.1rem;line-height:18px}
+.vis .q{width:54px;height:44px;display:grid;place-items:center;font:700 1.5rem var(--f);color:var(--line)}
 .accs{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
 .accs button{min-height:52px;border-radius:18px;border:2px solid var(--line);background:var(--surface);padding:4px 8px;font:700 .92rem/1.15 var(--f)}
 .accs button[aria-pressed="true"]{background:var(--water);border-color:var(--water);color:#fff}
 .accs button.lock{color:var(--muted);border-style:dashed;background:none}
-.accs button small{display:block;font:500 .78rem var(--f)}
+.accs .mys{grid-column:1/-1;display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.accs .mys button{width:48px;min-height:48px;padding:0;border-radius:14px;font-size:1.2rem}
 .next{background:#FFF4D6;border-radius:16px;padding:10px 14px;font:700 .95rem/1.4 var(--f);text-align:center}
 .gbar{height:14px;border-radius:99px;background:var(--good-soft);overflow:hidden}
 .gbar i{display:block;height:100%;background:var(--leaf);border-radius:99px}
@@ -609,15 +616,18 @@ function defaultMsg(n,g){
   else t=pick([`¡Muy bien! Te quedan ${fmtC(left)} vasos.`,`¡Vamos bien! Faltan ${fmtC(left)} vasos.`]);
   msgKey=key;msgText=t;return t;
 }
-const listY=a=>a.length<=1?(a[0]||""):a.slice(0,-1).join(", ")+" y "+a[a.length-1];
-function rewardsAt(d){const r=[];if(d>=1&&d<=ITEMS.length)r.push(ITEMS[d-1].n+" en el jardín");UNLOCKS.filter(u=>u.at===d).forEach(u=>r.push(u.kind==="sky"?u.n+" en el cielo":u.n+" para Pipa"));return r}
-function nextUnlock(gd){return UNLOCKS.find(u=>u.at>gd)||null}
+/* sorpresas: se sabe cuánto falta, pero nunca qué será */
+const SURPRISE_DAYS=[...new Set([...ITEMS.map((_,i)=>i+1),...UNLOCKS.map(u=>u.at)])].sort((a,b)=>a-b);
+const nextSurprise=gd=>SURPRISE_DAYS.find(d=>d>gd)||null;
+const prevSurprise=gd=>[0,...SURPRISE_DAYS].filter(d=>d<=gd).pop();
+const isBig=d=>UNLOCKS.some(u=>u.at===d&&u.star);
 function hintText(gd,doneToday){
-  if(!doneToday){const r=rewardsAt(gd+1);if(r.length)return `Si cumples hoy: <b>${listY(r)}</b>.`}
-  const u=nextUnlock(gd+(doneToday?0:1));
-  if(!u)return gd>=100?"¡Pipa ya lo tiene todo! Eres la mejor jardinera.":"";
-  const left=u.at-gd;
-  return `${left===1?"En el próximo día cumplido":`Dentro de ${left} días cumplidos`}: <b>${u.n}</b>${u.kind==="sky"?" en el cielo":" para Pipa"}${u.star?" ⭐":""}.`;
+  const ns=nextSurprise(gd);
+  if(!ns)return "¡Pipa ya lo tiene todo! Eres la mejor jardinera.";
+  const left=ns-gd,big=isBig(ns);
+  if(!doneToday&&left===1)return big?"Si cumples hoy… ¡hay una <b>gran sorpresa</b>! ⭐":"Si cumples hoy, habrá una <b>sorpresa</b> 🎁";
+  if(doneToday&&left===1)return big?"Mañana, si cumples… ¡<b>gran sorpresa</b>! ⭐":"Mañana, si cumples, habrá otra <b>sorpresa</b> 🎁";
+  return `Próxima ${big?"<b>gran sorpresa</b> ⭐":"<b>sorpresa</b> 🎁"}: dentro de ${left} días cumplidos.`;
 }
 
 /* ---------- pantalla ---------- */
@@ -750,28 +760,33 @@ $("soundbtn").addEventListener("click",()=>{S().sound=!S().sound;store();render(
 function renderDress(){
   const gd=goodDays(),lk=look();
   $("dress-pet").innerHTML=petSVG(Math.max(1,stageOf(gd)),"happy",lk);
-  $("dress-pots").innerHTML=Object.entries(POTS).map(([id,p])=>{const ok=unlocked(p,gd);return `<button data-pot="${id}" class="${ok?"":"lock"}" aria-pressed="${lk.pot===id}" aria-label="Maceta ${p.n}${ok?"":", se consigue a los "+p.at+" días"}"><svg viewBox="22 74 56 34" aria-hidden="true">${potSVG(id)}</svg>${ok?p.n:"🔒 "+p.at+" días"}</button>`}).join("");
-  $("dress-accs").innerHTML=Object.entries(ACCS).map(([id,a])=>{const ok=unlocked(a,gd);return `<button data-acc="${id}" class="${ok?"":"lock"}" aria-pressed="${lk.acc===id}">${ok?a.n:`${a.n}<small>🔒 a los ${a.at} días</small>`}</button>`}).join("");
+  const MYST=`<rect x="25" y="76" width="50" height="8" rx="3" fill="none" stroke="#C3D2DA" stroke-width="2" stroke-dasharray="4 3"/><path d="M28 84 h44 l-5 21 h-34 z" fill="none" stroke="#C3D2DA" stroke-width="2" stroke-dasharray="4 3"/><text x="50" y="101" text-anchor="middle" font-size="16" font-weight="700" fill="#9FB3BE" font-family="Zen Maru Gothic, sans-serif">?</text>`;
+  $("dress-pots").innerHTML=Object.entries(POTS).map(([id,p])=>{const ok=unlocked(p,gd);return ok?`<button data-pot="${id}" aria-pressed="${lk.pot===id}" aria-label="Maceta ${p.n}"><svg viewBox="22 74 56 34" aria-hidden="true">${potSVG(id)}</svg>${p.n}</button>`:`<button data-mystery="1" class="lock" aria-label="Sorpresa por descubrir"><svg viewBox="22 74 56 34" aria-hidden="true">${MYST}</svg>&nbsp;</button>`}).join("");
+  const accE=Object.entries(ACCS),locked=accE.filter(([,a])=>!unlocked(a,gd)).length;
+  $("dress-accs").innerHTML=accE.filter(([,a])=>unlocked(a,gd)).map(([id,a])=>`<button data-acc="${id}" aria-pressed="${lk.acc===id}">${a.n}</button>`).join("")+(locked?`<div class="mys">${Array.from({length:locked},()=>`<button data-mystery="1" class="lock" aria-label="Complemento sorpresa por descubrir">🎁</button>`).join("")}</div>`:"");
 }
 function renderColl(){
   const gd=goodDays(),n=Math.min(gd,ITEMS.length),se=SEASON_INFO[season()];
   $("coll-kpi").innerHTML=`<span>Días cumplidos: <b>${gd}</b></span><span>${se.e} ${se.t}</span>`;
   renderDress();
-  const u=nextUnlock(gd);
-  $("coll-next").innerHTML=u?`🎁 Próximo premio a los <b>${u.at} días</b>: ${u.n}${u.kind==="sky"?" en el cielo":""}${u.star?" ⭐":""}`:"🎉 ¡Pipa ya tiene todos los premios!";
+  const ns=nextSurprise(gd),ps=prevSurprise(gd);
+  if(ns){const steps=ns-ps,done=gd-ps,left=ns-gd,big=isBig(ns);
+    $("coll-next").innerHTML=`<div class="mystery"><span>${big?"⭐ Próxima gran sorpresa":"🎁 Próxima sorpresa"}</span><span class="dots" aria-hidden="true">${Array.from({length:steps},(_,i)=>i===steps-1?`<i class="gift">${big?"⭐":"🎁"}</i>`:`<i class="${i<done?"on":""}"></i>`).join("")}</span><span>${left===1?"¡En el próximo día cumplido!":`Faltan ${left} días cumplidos`}</span></div>`}
+  else $("coll-next").innerHTML="🎉 ¡Pipa ya ha descubierto todas las sorpresas!";
   $("coll-garden").textContent=`Jardín: ${n} de ${ITEMS.length} cosas`;
   $("coll-gbar").style.width=(n/ITEMS.length*100)+"%";
-  $("coll-gnext").innerHTML=n<ITEMS.length?`La próxima vez que cumplas el objetivo ${ITEMS[n].n.startsWith("unas ")?"aparecerán":"aparecerá"} <b>${ITEMS[n].n}</b>.`:"¡El jardín está completo! Ahora cambia con las estaciones y aún quedan premios en el cielo.";
+  $("coll-gnext").innerHTML=n<ITEMS.length?"Cada día que cumplas el objetivo aparecerá algo nuevo. ¿Qué será?":"¡El jardín está completo! Ahora cambia con las estaciones… y aún quedan sorpresas.";
   const seen=seenVisitors();
-  $("coll-vis").innerHTML=VISITORS.map((v,i)=>{const c=seen[i]||0;return `<div class="${c?"":"no"}"><svg viewBox="-17 -15 34 30" aria-hidden="true">${v.d}</svg>${c?cap(v.s):"?"}<small>${c?(c===1?"1 visita":c+" visitas"):"aún no"}</small></div>`}).join("");
+  $("coll-vis").innerHTML=VISITORS.map((v,i)=>{const c=seen[i]||0;return c?`<div><svg viewBox="-17 -15 34 30" aria-hidden="true">${v.d}</svg>${cap(v.s)}<small>${c===1?"1 visita":c+" visitas"}</small></div>`:`<div class="no"><span class="q" aria-hidden="true">?</span>¿Quién será?<small>aún no ha venido</small></div>`}).join("");
   const B=load().badges,got=BADGES.filter(b=>B[b.id]).length;
   $("coll-bt").textContent=`Logros: ${got} de ${BADGES.length}`;
-  $("coll-badges").innerHTML=BADGES.map(b=>`<div class="badge${B[b.id]?"":" no"}"><span class="em" aria-hidden="true">${b.e}</span><b>${b.n}</b><small>${b.d}</small></div>`).join("");
+  $("coll-badges").innerHTML=BADGES.map(b=>`<div class="badge${B[b.id]?"":" no"}"><span class="em" aria-hidden="true">${B[b.id]?b.e:"?"}</span><b>${b.n}</b><small>${b.d}</small></div>`).join("");
 }
 $("collbtn").addEventListener("click",()=>{renderColl();load().unseen=false;store();$("coll").hidden=false;SND.tap();$("coll-close").focus({preventScroll:true});$("coll").querySelector(".card").scrollTop=0;render()});
 $("coll-close").addEventListener("click",()=>{$("coll").hidden=true;render()});
 $("coll").addEventListener("click",e=>{
-  const b=e.target.closest("[data-pot],[data-acc]");if(!b)return;
+  const b=e.target.closest("[data-pot],[data-acc],[data-mystery]");if(!b)return;
+  if(b.dataset.mystery){SND.tap();toast("¡Es una sorpresa! Sigue cumpliendo el objetivo para descubrirla.",3000);return}
   const gd=goodDays();
   if(b.dataset.pot){const p=POTS[b.dataset.pot];if(!unlocked(p,gd)){toast(`Se consigue al cumplir el objetivo ${p.at} días`);return}S().pot=b.dataset.pot}
   else{const a=ACCS[b.dataset.acc];if(!unlocked(a,gd)){toast(`Se consigue al cumplir el objetivo ${a.at} días`);return}S().acc=b.dataset.acc}
